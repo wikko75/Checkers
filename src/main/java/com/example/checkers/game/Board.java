@@ -57,26 +57,24 @@ public class Board {
         String boardState = "";
         for (int x=0; x<size; x++) {
             for (int y=0; y<size; y++) {
-                switch(getPieceColor(x, y)) {
-                    case WHITE:
-                        boardState.concat("W");
+                switch (getPieceColor(x, y)) {
+                    case WHITE -> {
+                        boardState = boardState.concat("W");
                         if (getPieceType(x, y) == Type.KING) {
-                            boardState.concat("K ");
+                            boardState = boardState.concat("K ");
                         } else {
-                            boardState.concat("M ");
+                            boardState = boardState.concat("M ");
                         }
-                        break;
-                    case BLACK:
-                        boardState.concat("B");
+                    }
+                    case BLACK -> {
+                        boardState = boardState.concat("B");
                         if (getPieceType(x, y) == Type.KING) {
-                            boardState.concat("K ");
+                            boardState = boardState.concat("K ");
                         } else {
-                            boardState.concat("M ");
+                            boardState = boardState.concat("M ");
                         }
-                        break;
-                    case EMPTY:
-                        boardState.concat("00 ");
-                        break;
+                    }
+                    case EMPTY -> boardState = boardState.concat("00 ");
                 }
             }
         }
