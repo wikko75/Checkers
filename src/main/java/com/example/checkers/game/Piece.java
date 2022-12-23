@@ -1,16 +1,6 @@
-package com.example.checkers;
+package com.example.checkers.game;
 
 public class Piece {
-
-    protected enum Color {
-        WHITE,
-        BLACK
-    }
-
-    protected enum Type {
-        MAN,
-        KING
-    }
 
     private final Color color;
     private final Type type;

@@ -5,4 +5,6 @@ module com.example.checkers {
 
     opens com.example.checkers to javafx.fxml;
     exports com.example.checkers;
+    exports com.example.checkers.game;
+    opens com.example.checkers.game to javafx.fxml;
 }
