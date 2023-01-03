@@ -16,8 +16,9 @@ public class Board {
         pieces = new Piece[size][size];
 
         // parameters
-        int rows = size == 8? 3: 5;
+        int rows = size == 8? 3: 4;
         int offset = leftDownCornerBlack? 0: 1;
+
         // placing white pieces
         for(int y=0; y<rows; y++) {
             for(int x=0; x<size; x+=2) {
@@ -52,11 +53,16 @@ public class Board {
         for (int x=0; x<size; x++) {
             for (int y=0; y<size; y++) {
                 if(getPiece(x, y)!=null) {
-                    if(getPiece(x, y).getColor()==Color.WHITE) { boardState.concat("W"); }
-                    else { boardState.concat("B"); }
-                    if(getPiece(x, y).getType()==Type.MAN) { boardState.concat("M "); }
-                    else { boardState.concat("K "); }
-                } else { boardState.concat("00 "); }
+                    if(getPiece(x, y).getColor()==Color.WHITE) {
+                        boardState = boardState.concat("W"); }
+                    else {
+                        boardState = boardState.concat("B"); }
+                    if(getPiece(x, y).getType()==Type.MAN) {
+                        boardState = boardState.concat("M "); }
+                    else {
+                        boardState = boardState.concat("K "); }
+                } else {
+                    boardState = boardState.concat("00 "); }
             }
         }
         return boardState;
