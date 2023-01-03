@@ -15,14 +15,15 @@ public class BoardTest {
     @Test
     public void testing8x8Board() {
         String boardState = "";
-        boardState.concat("WM 00 WM 00 WM 00 WM 00");
-        boardState.concat("00 WM 00 WM 00 WM 00 WM");
-        boardState.concat("WM 00 WM 00 WM 00 WM 00");
-        boardState.concat("00 00 00 00 00 00 00 00");
-        boardState.concat("00 00 00 00 00 00 00 00");
-        boardState.concat("00 BM 00 BM 00 BM 00 BM");
-        boardState.concat("BM 00 BM 00 BM 00 BM 00");
-        boardState.concat("00 BM 00 BM 00 BM 00 BM");
+
+        boardState = boardState.concat("WM 00 WM 00 00 00 BM 00");
+        boardState = boardState.concat(" 00 WM 00 00 00 BM 00 BM");
+        boardState = boardState.concat(" WM 00 WM 00 00 00 BM 00");
+        boardState = boardState.concat(" 00 WM 00 00 00 BM 00 BM");
+        boardState = boardState.concat(" WM 00 WM 00 00 00 BM 00");
+        boardState = boardState.concat(" 00 WM 00 00 00 BM 00 BM");
+        boardState = boardState.concat(" WM 00 WM 00 00 00 BM 00");
+        boardState = boardState.concat(" 00 WM 00 00 00 BM 00 BM ");
 
         Board board = new Board(8, true);
         Assertions.assertEquals(board.getBoardState(), boardState);
@@ -31,14 +32,15 @@ public class BoardTest {
     @Test
     public void testing8x8Board_alternateCorner() {
         String boardState = "";
-        boardState.concat("00 WM 00 WM 00 WM 00 WM");
-        boardState.concat("WM 00 WM 00 WM 00 WM 00");
-        boardState.concat("00 WM 00 WM 00 WM 00 WM");
-        boardState.concat("00 00 00 00 00 00 00 00");
-        boardState.concat("00 00 00 00 00 00 00 00");
-        boardState.concat("BM 00 BM 00 BM 00 BM 00");
-        boardState.concat("00 BM 00 BM 00 BM 00 BM");
-        boardState.concat("BM 00 BM 00 BM 00 BM 00");
+
+        boardState = boardState.concat("00 WM 00 00 00 BM 00 BM");
+        boardState = boardState.concat(" WM 00 WM 00 00 00 BM 00");
+        boardState = boardState.concat(" 00 WM 00 00 00 BM 00 BM");
+        boardState = boardState.concat(" WM 00 WM 00 00 00 BM 00");
+        boardState = boardState.concat(" 00 WM 00 00 00 BM 00 BM");
+        boardState = boardState.concat(" WM 00 WM 00 00 00 BM 00");
+        boardState = boardState.concat(" 00 WM 00 00 00 BM 00 BM");
+        boardState = boardState.concat(" WM 00 WM 00 00 00 BM 00 ");
 
         Board board = new Board(8, false);
         Assertions.assertEquals(board.getBoardState(), boardState);
@@ -47,36 +49,38 @@ public class BoardTest {
     @Test
     public void testing10x10Board() {
         String boardState = "";
-        boardState.concat("WM 00 WM 00 WM 00 WM 00 WM 00");
-        boardState.concat("00 WM 00 WM 00 WM 00 WM 00 WM");
-        boardState.concat("WM 00 WM 00 WM 00 WM 00 WM 00");
-        boardState.concat("00 WM 00 WM 00 WM 00 WM 00 WM");
-        boardState.concat("00 00 00 00 00 00 00 00 00 00");
-        boardState.concat("00 00 00 00 00 00 00 00 00 00");
-        boardState.concat("BM 00 BM 00 BM 00 BM 00 BM 00");
-        boardState.concat("00 BM 00 BM 00 BM 00 BM 00 BM");
-        boardState.concat("BM 00 BM 00 BM 00 BM 00 BM 00");
-        boardState.concat("00 BM 00 BM 00 BM 00 BM 00 BM");
 
-        Board board = new Board(8, true);
+        boardState = boardState.concat("WM 00 WM 00 00 00 BM 00 BM 00");
+        boardState = boardState.concat(" 00 WM 00 WM 00 00 00 BM 00 BM");
+        boardState = boardState.concat(" WM 00 WM 00 00 00 BM 00 BM 00");
+        boardState = boardState.concat(" 00 WM 00 WM 00 00 00 BM 00 BM");
+        boardState = boardState.concat(" WM 00 WM 00 00 00 BM 00 BM 00");
+        boardState = boardState.concat(" 00 WM 00 WM 00 00 00 BM 00 BM");
+        boardState = boardState.concat(" WM 00 WM 00 00 00 BM 00 BM 00");
+        boardState = boardState.concat(" 00 WM 00 WM 00 00 00 BM 00 BM");
+        boardState = boardState.concat(" WM 00 WM 00 00 00 BM 00 BM 00");
+        boardState = boardState.concat(" 00 WM 00 WM 00 00 00 BM 00 BM ");
+
+        Board board = new Board(10, true);
         Assertions.assertEquals(board.getBoardState(), boardState);
     }
 
     @Test
     public void testing10x10Board_alternateCorner() {
         String boardState = "";
-        boardState.concat("00 WM 00 WM 00 WM 00 WM 00 WM");
-        boardState.concat("WM 00 WM 00 WM 00 WM 00 WM 00");
-        boardState.concat("00 WM 00 WM 00 WM 00 WM 00 WM");
-        boardState.concat("WM 00 WM 00 WM 00 WM 00 WM 00");
-        boardState.concat("00 00 00 00 00 00 00 00 00 00");
-        boardState.concat("00 00 00 00 00 00 00 00 00 00");
-        boardState.concat("00 BM 00 BM 00 BM 00 BM 00 BM");
-        boardState.concat("BM 00 BM 00 BM 00 BM 00 BM 00");
-        boardState.concat("00 BM 00 BM 00 BM 00 BM 00 BM");
-        boardState.concat("BM 00 BM 00 BM 00 BM 00 BM 00");
 
-        Board board = new Board(8, true);
+        boardState = boardState.concat("00 WM 00 WM 00 00 00 BM 00 BM");
+        boardState = boardState.concat(" WM 00 WM 00 00 00 BM 00 BM 00");
+        boardState = boardState.concat(" 00 WM 00 WM 00 00 00 BM 00 BM");
+        boardState = boardState.concat(" WM 00 WM 00 00 00 BM 00 BM 00");
+        boardState = boardState.concat(" 00 WM 00 WM 00 00 00 BM 00 BM");
+        boardState = boardState.concat(" WM 00 WM 00 00 00 BM 00 BM 00");
+        boardState = boardState.concat(" 00 WM 00 WM 00 00 00 BM 00 BM");
+        boardState = boardState.concat(" WM 00 WM 00 00 00 BM 00 BM 00");
+        boardState = boardState.concat(" 00 WM 00 WM 00 00 00 BM 00 BM");
+        boardState = boardState.concat(" WM 00 WM 00 00 00 BM 00 BM 00 ");
+
+        Board board = new Board(10, false);
         Assertions.assertEquals(board.getBoardState(), boardState);
     }
 
@@ -91,18 +95,19 @@ public class BoardTest {
     @Test
     public void testingAddRemovePiece() {
         String boardState = "";
-        boardState.concat("00 00 WM 00 WM 00 WM 00");
-        boardState.concat("00 WM 00 WM 00 WM 00 WM");
-        boardState.concat("WM 00 WM 00 WM 00 WM 00");
-        boardState.concat("BK 00 00 00 00 00 00 00");
-        boardState.concat("00 00 00 00 00 00 00 00");
-        boardState.concat("00 BM 00 BM 00 BM 00 BM");
-        boardState.concat("BM 00 BM 00 BM 00 BM 00");
-        boardState.concat("00 BM 00 BM 00 BM 00 BM");
+
+        boardState = boardState.concat("BK 00 WM 00 00 00 BM 00");
+        boardState = boardState.concat(" 00 WM 00 00 00 BM 00 BM");
+        boardState = boardState.concat(" WM 00 WM 00 00 00 BM 00");
+        boardState = boardState.concat(" 00 WM 00 00 00 BM 00 BM");
+        boardState = boardState.concat(" WM 00 WM 00 00 00 BM 00");
+        boardState = boardState.concat(" 00 WM 00 00 00 BM 00 BM");
+        boardState = boardState.concat(" WM 00 WM 00 00 00 BM 00");
+        boardState = boardState.concat(" 00 WM 00 00 00 BM 00 BM ");
 
         Board board = new Board(8, true);
         board.removePiece(0, 0);
         board.addPiece(0, 0, Color.BLACK, Type.KING);
-        Assertions.assertSame(board.getBoardState(), boardState);
+        Assertions.assertEquals(board.getBoardState(), boardState);
     }
 }
