@@ -35,14 +35,8 @@ public class Board {
     public int getSize() {
         return size;
     }
-
-    public Color getPieceColor(int x, int y) {
-        if(pieces[x][y]!=null) { return pieces[x][y].getColor(); }
-        else { return Color.EMPTY; }
-    }
-
-    public Type getPieceType(int x, int y) {
-        return pieces[x][y].getType();
+    public Piece getPiece(int x, int y) {
+        return pieces[x][y];
     }
 
     public void addPiece(int x, int y, Color color, Type type) {
@@ -57,27 +51,12 @@ public class Board {
         String boardState = "";
         for (int x=0; x<size; x++) {
             for (int y=0; y<size; y++) {
-                switch(getPieceColor(x, y)) {
-                    case WHITE:
-                        boardState.concat("W");
-                        if (getPieceType(x, y) == Type.KING) {
-                            boardState.concat("K ");
-                        } else {
-                            boardState.concat("M ");
-                        }
-                        break;
-                    case BLACK:
-                        boardState.concat("B");
-                        if (getPieceType(x, y) == Type.KING) {
-                            boardState.concat("K ");
-                        } else {
-                            boardState.concat("M ");
-                        }
-                        break;
-                    case EMPTY:
-                        boardState.concat("00 ");
-                        break;
-                }
+                if(getPiece(x, y)!=null) {
+                    if(getPiece(x, y).getColor()==Color.WHITE) { boardState.concat("W"); }
+                    else { boardState.concat("B"); }
+                    if(getPiece(x, y).getType()==Type.MAN) { boardState.concat("M "); }
+                    else { boardState.concat("K "); }
+                } else { boardState.concat("00 "); }
             }
         }
         return boardState;
