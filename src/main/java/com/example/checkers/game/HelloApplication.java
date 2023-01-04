@@ -27,11 +27,14 @@ public class HelloApplication extends Application {
 
         if (variant.doMove(0, 0, 0, 1, Color.WHITE, Type.MAN)) {
             System.out.println("White made move!");
-
             System.out.println("Board state: " + variant.getBoardState());
         }
 
         System.out.println(variant.checkForWinningConditions());
-        System.out.println(variant.getLeftDownCornerBlack());
+        System.out.println("LeftDownCorner: " + variant.getLeftDownCornerBlack());
+
+        if (variant.checkForWinningConditions() == Variant.Winner.NONE) {
+            System.out.println("Winner: NONE");
+        }
     }
 }
