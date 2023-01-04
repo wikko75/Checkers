@@ -1,4 +1,4 @@
-package com.example.checkers;
+package com.example.checkers.game;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -18,6 +18,20 @@ public class HelloApplication extends Application {
     }
 
     public static void main(String[] args) {
-        launch();
+        //launch();
+
+        Variant variant = new Variant(8, true, true, true, false, true);
+
+        System.out.println("Board created!\n");
+        System.out.println("Board state: " + variant.getBoardState());
+
+        if (variant.doMove(0, 0, 0, 1, Color.WHITE, Type.MAN)) {
+            System.out.println("White made move!");
+
+            System.out.println("Board state: " + variant.getBoardState());
+        }
+
+        System.out.println(variant.checkForWinningConditions());
+        System.out.println(variant.getLeftDownCornerBlack());
     }
 }
