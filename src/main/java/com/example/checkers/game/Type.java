@@ -1,6 +1,6 @@
 package com.example.checkers.game;
 
-enum Type {
+public enum Type {
     MAN,
     KING
 }

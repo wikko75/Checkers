@@ -1,6 +1,6 @@
 package com.example.checkers.game;
 
-enum Color {
+public enum Color {
     WHITE,
     BLACK
 }
