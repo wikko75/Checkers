@@ -58,14 +58,38 @@ public class Client extends Frame implements ActionListener, Runnable {
     private void receive(){
         try {
             String status = in.readLine();
-            String command = in.readLine();
-            msg.setText(command);
 
             switch(status) {
-                case "RECEIVE" -> send.setEnabled(false);
-                case "SEND" -> send.setEnabled(true);
+                case "SELECT_GM" -> {
+                    if (player==1) {
+                        send.setEnabled(true);
+                        msg.setText("Select game mode");
+                    } else {
+                        send.setEnabled(false);
+                        msg.setText("Wait for player one to select game mode");
+                    }
+                }
+                case "MOVE" -> {
+                    send.setEnabled(true);
+                    String command = in.readLine();
+                    msg.setText(command);
+                }
+                case "WAIT_FOR_MOVE" -> {
+                    send.setEnabled(false);
+                    msg.setText("Wait for opponent's move");
+                }
+                case "DRAW_BOARD" -> {
+                    String command = in.readLine();
+                    output.setText(command);
+                }
+                case "GAME_END" -> {
+                    send.setEnabled(player == 1);
+                    String command = in.readLine();
+                    msg.setText(command);
+                }
                 case "TERMINATE" -> {
                     send.setEnabled(false);
+                    msg.setText("Shutting down...");
                     try{ Thread.sleep(1000); }
                     catch(InterruptedException ex) {}
                     System.exit(0);

@@ -36,14 +36,10 @@ public class GameModeSelection implements Runnable {
             String line;
             do {
                 System.out.println("Receiving selection from player one");
-                outF.println("SEND");
-                outF.println("Select game mode");
-                outS.println("RECEIVE");
-                outS.println("Wait for player one to select game mode");
+                outF.println("SELECT_GM");
+                outS.println("SELECT_GM");
 
                 line = inF.readLine();
-                outF.println("RECEIVE");
-                outF.println("Starting game...");
                 System.out.println(line);
                 switch (line) {
                     case "BRAZILIAN" -> selection = GameMode.BRAZILIAN;
