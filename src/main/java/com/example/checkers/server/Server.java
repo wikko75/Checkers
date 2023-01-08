@@ -6,6 +6,20 @@ import java.net.Socket;
 
 public class Server {
 
+    private static void startGame(Socket firstPlayer, Socket secondPlayer, VariantBuilder variantBuilder) {
+        VariantDirector director = new VariantDirector(variantBuilder);
+        GameInstance gameInstance = new GameInstance(firstPlayer, secondPlayer, director.getVariant());
+        Thread gameThread = new Thread(gameInstance);
+        gameThread.start();
+        try {
+            gameThread.join();
+        }
+        catch (InterruptedException ex) {
+            System.err.println("Exception waiting for game thread");
+            System.exit(1);
+        }
+    }
+
     public static void main(String[] args) {
 
         try (ServerSocket serverSocket = new ServerSocket(4444)) {
@@ -44,14 +58,20 @@ public class Server {
                             System.err.println("Exception waiting for selected game mode");
                             System.exit(1);
                         }
-                        // TODO: handle exception
                         GameMode gameMode = gameModeSelection.getSelection();
+                        VariantBuilder variantBuilder;
 
                         switch (gameMode) {
-                            case BRAZILIAN -> System.out.println("Selected brazilian");
-                            // TODO: running game
-                            case POLISH -> System.out.println("Selected polish");
-                            // TODO: running game
+                            case BRAZILIAN -> {
+                                System.out.println("Selected brazilian");
+                                variantBuilder = new BrazilianVariantBuilder();
+                                startGame(firstPlayer, secondPlayer, variantBuilder);
+                            }
+                            case POLISH -> {
+                                System.out.println("Selected polish");
+                                variantBuilder = new PolishVariantBuilder();
+                                startGame(firstPlayer, secondPlayer, variantBuilder);
+                            }
                             // TODO: third variant
                             case EXIT -> {
                                 outF.println("TERMINATE");
