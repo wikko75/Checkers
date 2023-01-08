@@ -1,6 +1,6 @@
 package com.example.checkers.server;
 
-import java.io.IOException;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -15,33 +15,57 @@ public class Server {
             while(true) {
 
                 // connecting sockets
-                /*Socket firstClient = serverSocket.accept();
+                Socket firstPlayer = serverSocket.accept();
                 System.out.println("First client connected");
                 System.out.println("Waiting for the second player");
 
-                Socket secondClient = serverSocket.accept();
-                System.out.println("Second client connected"); */
+                Socket secondPlayer = serverSocket.accept();
+                System.out.println("Second client connected");
 
-                // game loop
-                while(true) {
-                    //GameModeSelection gameModeSelection = new GameModeSelection(firstClient, secondClient);
-                    GameModeSelection gameModeSelection = new GameModeSelection();
-                    Thread gameModeSelectionThread = new Thread(gameModeSelection);
-                    gameModeSelectionThread.start();
-                    try {
-                        gameModeSelectionThread.join();
-                    } catch (Exception ex) {;}
-                    // TODO: handle exception
-                    GameMode gameMode = gameModeSelection.getSelection();
+                try {
+                    OutputStream outputF = firstPlayer.getOutputStream();
+                    PrintWriter outF = new PrintWriter(outputF, true);
+                    System.out.println("Initializing player one");
+                    outF.println("1");
 
-                    switch(gameMode) {
-                        case BRAZILIAN -> System.out.println("Selected brazilian");
-                        // TODO: running game
-                        case POLISH -> System.out.println("Selected polish");
-                        // TODO: running game
-                        // TODO: third variant
-                        case EXIT -> { return; }
+                    OutputStream outputS = secondPlayer.getOutputStream();
+                    PrintWriter outS = new PrintWriter(outputS, true);
+                    System.out.println("Initializing player two");
+                    outS.println("2");
+
+                    // game loop
+                    while (true) {
+                        GameModeSelection gameModeSelection = new GameModeSelection(firstPlayer, secondPlayer);
+                        Thread gameModeSelectionThread = new Thread(gameModeSelection);
+                        gameModeSelectionThread.start();
+                        try {
+                            gameModeSelectionThread.join();
+                        } catch (InterruptedException ex) {
+                            System.err.println("Exception waiting for selected game mode");
+                            System.exit(1);
+                        }
+                        // TODO: handle exception
+                        GameMode gameMode = gameModeSelection.getSelection();
+
+                        switch (gameMode) {
+                            case BRAZILIAN -> System.out.println("Selected brazilian");
+                            // TODO: running game
+                            case POLISH -> System.out.println("Selected polish");
+                            // TODO: running game
+                            // TODO: third variant
+                            case EXIT -> {
+                                outF.println("TERMINATE");
+                                outF.println("Shutting down...");
+                                outS.println("TERMINATE");
+                                outS.println("Shutting down...");
+                                System.exit(0);
+                            }
+                        }
                     }
+                }
+                    catch(IOException ex) {
+                    System.err.println("Problem contacting sockets, shutting down");
+                    System.exit(1);
                 }
 
 

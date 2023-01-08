@@ -3,5 +3,6 @@ package com.example.checkers.server;
 public enum GameMode {
     BRAZILIAN,
     POLISH,
-    EXIT
+    EXIT,
+    NOT_SELECTED
 }
