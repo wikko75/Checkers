@@ -9,7 +9,7 @@ public class Variant {
     private final boolean manCaptureBackwards;
     private final boolean leftDownCornerBlack;
 
-    enum Winner {
+    public enum Winner {
         WHITE_WIN,
         BLACK_WIN,
         DRAW,
@@ -122,7 +122,7 @@ public class Variant {
 
     }
 
-    Winner checkForWinningConditions() {
+    public Winner checkForWinningConditions() {
         return Winner.NONE;
     }
 
