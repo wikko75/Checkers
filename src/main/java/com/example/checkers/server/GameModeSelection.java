@@ -4,17 +4,11 @@ import java.io.*;
 
 public class GameModeSelection implements Runnable {
 
-    private final BufferedReader inF;
-    private final BufferedReader inS;
-    private final PrintWriter outF;
-    private final PrintWriter outS;
+    private final Communicator communicator;
     private volatile GameMode selection;
 
-    public GameModeSelection(BufferedReader inF, BufferedReader inS, PrintWriter outF, PrintWriter outS) {
-        this.inF = inF;
-        this.inS = inS;
-        this.outF = outF;
-        this.outS = outS;
+    public GameModeSelection(Communicator communicator) {
+        this.communicator = communicator;
         selection = GameMode.NOT_SELECTED;
     }
 
@@ -25,10 +19,9 @@ public class GameModeSelection implements Runnable {
             String line;
             do {
                 System.out.println("Receiving selection from player one");
-                outF.println("SELECT_GM");
-                outS.println("SELECT_GM");
+                communicator.sendGameModeSelectionRequest();
 
-                line = inF.readLine();
+                line = communicator.getClientInput(1);
                 System.out.println(line);
                 switch (line) {
                     case "BRAZILIAN" -> selection = GameMode.BRAZILIAN;
