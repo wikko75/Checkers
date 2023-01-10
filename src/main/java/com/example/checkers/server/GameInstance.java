@@ -52,7 +52,6 @@ public class GameInstance implements Runnable {
         communicator.drawBoard(variant.getBoardState());
         //game loop
         do {
-            communicator.sendWaitForMoveRequest(turn);
             attemptMove("Your move");
             turn = turn==1 ? 2 : 1;
         }
