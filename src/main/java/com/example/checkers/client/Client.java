@@ -1,5 +1,7 @@
 package com.example.checkers.client;
 
+import org.json.JSONObject;
+
 import java.awt.Button;
 import java.awt.Color;
 import java.awt.Font;
@@ -28,7 +30,7 @@ public class Client extends Frame implements ActionListener, Runnable {
     private int player;
     Client() {
         setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 40));
-        msg = new Label("Status");
+        msg = new Label("Waiting for server...");
         input = new TextField(20);
         output = new Label();
         output.setBackground(Color.white);
@@ -48,7 +50,7 @@ public class Client extends Frame implements ActionListener, Runnable {
     }
 
     private void send(){
-        out.println(input.getText());
+        out.println("{\"message\":\""+input.getText()+"\"}");
         msg.setText("Waiting for server response...");
         send.setEnabled(false);
         input.setText("");
@@ -57,37 +59,41 @@ public class Client extends Frame implements ActionListener, Runnable {
 
     private void receive(){
         try {
-            String status = in.readLine();
+            String serverMessage = in.readLine();
+            JSONObject json = new JSONObject(serverMessage);
 
-            switch(status) {
-                case "SELECT_GM" -> {
-                    if (player==1) {
+            switch(json.getString("instruction")) {
+                case "init" -> {
+                    send.setEnabled(false);
+                    player = json.getInt("value");
+                }
+                case "select_game_mode" -> {
+                    if (json.getInt("player")==player) {
                         send.setEnabled(true);
-                        msg.setText("Select game mode");
+                        msg.setText("Select the game mode");
                     } else {
                         send.setEnabled(false);
-                        msg.setText("Wait for player one to select game mode");
+                        msg.setText("Wait for the other player to select the game mode");
                     }
                 }
-                case "MOVE" -> {
-                    send.setEnabled(true);
-                    String command = in.readLine();
-                    msg.setText(command);
+                case "move" -> {
+                    if(json.getInt("player")==player) {
+                        send.setEnabled(true);
+                        msg.setText(json.getString("message"));
+                    } else {
+                        send.setEnabled(false);
+                        msg.setText("Wait for opponent's move");
+                    }
                 }
-                case "WAIT_FOR_MOVE" -> {
-                    send.setEnabled(false);
-                    msg.setText("Wait for opponent's move");
+                case "draw_board" -> {
+                    // TODO: reverse board for player 2
+                    output.setText(json.getString("board_state"));
                 }
-                case "DRAW_BOARD" -> {
-                    String command = in.readLine();
-                    output.setText(command);
-                }
-                case "GAME_END" -> {
+                case "end_game" -> {
                     send.setEnabled(player == 1);
-                    String command = in.readLine();
-                    msg.setText(command);
+                    msg.setText(json.getString("winner"));
                 }
-                case "TERMINATE" -> {
+                case "terminate" -> {
                     send.setEnabled(false);
                     msg.setText("Shutting down...");
                     try{ Thread.sleep(1000); }
@@ -136,7 +142,7 @@ public class Client extends Frame implements ActionListener, Runnable {
         frame.pack();
         frame.setVisible(true);
         frame.listenSocket();
-        frame.receiveInitFromServer();
+        //frame.receiveInitFromServer();
         frame.startThread();
     }
 

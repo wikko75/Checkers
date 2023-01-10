@@ -1,5 +1,7 @@
 package com.example.checkers.server;
 
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -20,57 +22,44 @@ public class Communicator {
     }
 
     void initiate() {
-        outF.println("1");
-        outS.println("2");
+        outF.println("{\"instruction\":\"init\",\"value\":\"1\"}");
+        outS.println("{\"instruction\":\"init\",\"value\":\"2\"}");
     }
 
     void terminate() {
-        outF.println("TERMINATE");
-        outF.println("Shutting down...");
-        outS.println("TERMINATE");
-        outS.println("Shutting down...");
+        outF.println("{\"instruction\":\"terminate\"}");
+        outS.println("{\"instruction\":\"terminate\"}");
     }
 
     void sendGameModeSelectionRequest() {
-        outF.println("SELECT_GM");
-        outS.println("SELECT_GM");
+        outF.println("{\"instruction\":\"select_game_mode\",\"player\":\"1\"}");
+        outS.println("{\"instruction\":\"select_game_mode\",\"player\":\"1\"}");
     }
 
     void sendMoveRequest(int turn, String message) {
-        if(turn == 1) {
-            outF.println("MOVE");
-            outF.println(message);
-        } else {
-            outS.println("MOVE");
-            outS.println(message);
-        }
-    }
-
-    void sendWaitForMoveRequest(int turn) {
-        if(turn == 1) {
-            outS.println("WAIT_FOR_MOVE");
-        } else {
-            outF.println("WAIT_FOR_MOVE");
-        }
+        outF.println("{\"instruction\":\"move\",\"player\":\""+turn+"\",\"message\":\""+message+"\"}");
+        outS.println("{\"instruction\":\"move\",\"player\":\""+turn+"\",\"message\":\""+message+"\"}");
     }
 
     void drawBoard(String boardState) {
-        outF.println("DRAW_BOARD");
-        outF.println(boardState);
-        outS.println("DRAW_BOARD");
-        outS.println(boardState);
+        outF.println("{\"instruction\":\"draw_board\",\"board_state\":\""+boardState+"\"}");
+        outS.println("{\"instruction\":\"draw_board\",\"board_state\":\""+boardState+"\"}");
     }
 
     void endGame() {
-        outF.println("GAME_END");
-        outS.println("GAME_END");
+        // TODO
+        outF.println("{\"instruction\":\"end_game\",\"winner\":\"white\"}");
+        outS.println("{\"instruction\":\"end_game\",\"winner\":\"white\"}");
     }
 
     String getClientInput(int client) throws IOException {
+        String input;
         if(client == 1) {
-            return inF.readLine();
+            input = inF.readLine();
         } else {
-            return inS.readLine();
+            input = inS.readLine();
         }
+        JSONObject json = new JSONObject(input);
+        return json.getString("message");
     }
 }
