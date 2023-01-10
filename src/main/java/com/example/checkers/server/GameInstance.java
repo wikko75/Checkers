@@ -9,14 +9,18 @@ import java.net.Socket;
 
 public class GameInstance implements Runnable {
 
-    private final Socket firstPlayer;
-    private final Socket secondPlayer;
+    private final BufferedReader inF;
+    private final BufferedReader inS;
+    private final PrintWriter outF;
+    private final PrintWriter outS;
     private final Variant variant;
     private int turn = 1;
 
-    public GameInstance(Socket firstPlayer, Socket secondPlayer, Variant variant) {
-        this.firstPlayer = firstPlayer;
-        this.secondPlayer = secondPlayer;
+    public GameInstance(BufferedReader inF, BufferedReader inS, PrintWriter outF, PrintWriter outS, Variant variant) {
+        this.inF = inF;
+        this.inS = inS;
+        this.outF = outF;
+        this.outS = outS;
         this.variant = variant;
     }
 
@@ -59,43 +63,21 @@ public class GameInstance implements Runnable {
     public void run() {
         System.out.println("Running game...");
 
-        try {
-            InputStream inputF = firstPlayer.getInputStream();
-            BufferedReader inF = new BufferedReader(new InputStreamReader(inputF));
-
-            InputStream inputS = secondPlayer.getInputStream();
-            BufferedReader inS = new BufferedReader(new InputStreamReader(inputS));
-
-            OutputStream outputF = firstPlayer.getOutputStream();
-            PrintWriter outF = new PrintWriter(outputF, true);
-
-            OutputStream outputS = secondPlayer.getOutputStream();
-            PrintWriter outS = new PrintWriter(outputS, true);
-
-            drawBoard(outF, outS);
-            //game loop
-            do {
-                if(turn==1) {
-                    outS.println("WAIT_FOR_MOVE");
-                    attemptMove("Your move", inF, outF, outS);
-                }
-                else {
-                    outF.println("WAIT_FOR_MOVE");
-                    attemptMove("Your move", inS, outS, outF);
-                }
-                turn = turn==1 ? 2 : 1;
+        drawBoard(outF, outS);
+        //game loop
+        do {
+            if(turn==1) {
+                outS.println("WAIT_FOR_MOVE");
+                attemptMove("Your move", inF, outF, outS);
             }
-            while (variant.checkForWinningConditions()==Variant.Winner.NONE);
-
-            outF.println("GAME_END");
-            outS.println("GAME_END");
-
-
-
+            else {
+                outF.println("WAIT_FOR_MOVE");
+                attemptMove("Your move", inS, outS, outF);
+            }
+            turn = turn==1 ? 2 : 1;
         }
-        catch (IOException ex) {
-            System.err.println("IO Exception in GameInstance");
-            System.exit(1);
-        }
+        while (variant.checkForWinningConditions()==Variant.Winner.NONE);
+        outF.println("GAME_END");
+        outS.println("GAME_END");
     }
 }

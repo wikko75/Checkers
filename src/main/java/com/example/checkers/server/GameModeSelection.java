@@ -1,38 +1,27 @@
 package com.example.checkers.server;
 
 import java.io.*;
-import java.net.Socket;
 
 public class GameModeSelection implements Runnable {
 
-    private final Socket firstPlayer;
-    private final Socket secondPlayer;
+    private final BufferedReader inF;
+    private final BufferedReader inS;
+    private final PrintWriter outF;
+    private final PrintWriter outS;
     private volatile GameMode selection;
 
-    public GameModeSelection(Socket firstPlayer, Socket secondPlayer) {
-        this.firstPlayer = firstPlayer;
-        this.secondPlayer = secondPlayer;
+    public GameModeSelection(BufferedReader inF, BufferedReader inS, PrintWriter outF, PrintWriter outS) {
+        this.inF = inF;
+        this.inS = inS;
+        this.outF = outF;
+        this.outS = outS;
         selection = GameMode.NOT_SELECTED;
     }
 
     @Override
     public void run() {
-        //TODO implementation of gamemode selection
-        selection = GameMode.BRAZILIAN;
 
         try {
-            InputStream inputF = firstPlayer.getInputStream();
-            BufferedReader inF = new BufferedReader(new InputStreamReader(inputF));
-
-            InputStream inputS = secondPlayer.getInputStream();
-            BufferedReader inS = new BufferedReader(new InputStreamReader(inputS));
-
-            OutputStream outputF = firstPlayer.getOutputStream();
-            PrintWriter outF = new PrintWriter(outputF, true);
-
-            OutputStream outputS = secondPlayer.getOutputStream();
-            PrintWriter outS = new PrintWriter(outputS, true);
-
             String line;
             do {
                 System.out.println("Receiving selection from player one");
