@@ -6,9 +6,9 @@ import java.net.Socket;
 
 public class Server {
 
-    private static void startGame(BufferedReader inF, BufferedReader inS, PrintWriter outF, PrintWriter outS, VariantBuilder variantBuilder) {
+    private static void startGame(Communicator communicator, VariantBuilder variantBuilder) {
         VariantDirector director = new VariantDirector(variantBuilder);
-        GameInstance gameInstance = new GameInstance(inF, inS, outF, outS, director.getVariant());
+        GameInstance gameInstance = new GameInstance(communicator, director.getVariant());
         Thread gameThread = new Thread(gameInstance);
         gameThread.start();
         try {
@@ -31,22 +31,19 @@ public class Server {
                 try {
                     // connecting and initializing player one
                     Socket firstPlayer = serverSocket.accept();
-                    BufferedReader inF = new BufferedReader(new InputStreamReader(firstPlayer.getInputStream()));
-                    PrintWriter outF = new PrintWriter(firstPlayer.getOutputStream(), true);
-                    outF.println("1");
                     System.out.println("First client connected");
                     System.out.println("Waiting for the second player");
 
                     // connecting and initializing player two
                     Socket secondPlayer = serverSocket.accept();
-                    BufferedReader inS = new BufferedReader(new InputStreamReader(secondPlayer.getInputStream()));
-                    PrintWriter outS = new PrintWriter(secondPlayer.getOutputStream(), true);
-                    outS.println("2");
                     System.out.println("Second client connected");
+
+                    Communicator communicator = new Communicator(firstPlayer, secondPlayer);
+                    communicator.initiate();
 
                     // game loop
                     while (true) {
-                        GameModeSelection gameModeSelection = new GameModeSelection(inF, inS, outF, outS);
+                        GameModeSelection gameModeSelection = new GameModeSelection(communicator);
                         Thread gameModeSelectionThread = new Thread(gameModeSelection);
                         gameModeSelectionThread.start();
                         try {
@@ -62,19 +59,16 @@ public class Server {
                             case BRAZILIAN -> {
                                 System.out.println("Selected brazilian");
                                 variantBuilder = new BrazilianVariantBuilder();
-                                startGame(inF, inS, outF, outS, variantBuilder);
+                                startGame(communicator, variantBuilder);
                             }
                             case POLISH -> {
                                 System.out.println("Selected polish");
                                 variantBuilder = new PolishVariantBuilder();
-                                startGame(inF, inS, outF, outS, variantBuilder);
+                                startGame(communicator, variantBuilder);
                             }
                             // TODO: third variant
                             case EXIT -> {
-                                outF.println("TERMINATE");
-                                outF.println("Shutting down...");
-                                outS.println("TERMINATE");
-                                outS.println("Shutting down...");
+                                communicator.terminate();
                                 System.exit(0);
                             }
                         }

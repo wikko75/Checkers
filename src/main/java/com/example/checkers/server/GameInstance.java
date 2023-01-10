@@ -9,36 +9,22 @@ import java.net.Socket;
 
 public class GameInstance implements Runnable {
 
-    private final BufferedReader inF;
-    private final BufferedReader inS;
-    private final PrintWriter outF;
-    private final PrintWriter outS;
+    private final Communicator communicator;
     private final Variant variant;
     private int turn = 1;
 
-    public GameInstance(BufferedReader inF, BufferedReader inS, PrintWriter outF, PrintWriter outS, Variant variant) {
-        this.inF = inF;
-        this.inS = inS;
-        this.outF = outF;
-        this.outS = outS;
+    public GameInstance(Communicator communicator, Variant variant) {
+        this.communicator = communicator;
         this.variant = variant;
     }
 
-    private void drawBoard(PrintWriter out1, PrintWriter out2) {
-        out1.println("DRAW_BOARD");
-        out1.println(variant.getBoardState());
-        out2.println("DRAW_BOARD");
-        out2.println(variant.getBoardState());
-    }
-
-    private void attemptMove(String command, BufferedReader in, PrintWriter out, PrintWriter out2) {
+    private void attemptMove(String message) {
         if(variant.checkForWinningConditions()!= Variant.Winner.NONE) {
             return;
         }
         try {
-            out.println("MOVE");
-            out.println(command);
-            String line = in.readLine();
+            communicator.sendMoveRequest(turn, message);
+            String line = communicator.getClientInput(turn);
             String[] cords = line.split("\\W+");
             int x1 = Integer.parseInt(cords[0]);
             int y1 = Integer.parseInt(cords[1]);
@@ -48,9 +34,9 @@ public class GameInstance implements Runnable {
 
             boolean end_turn = variant.doMove(x1, y1, x2, y2, color, Type.MAN);
             //TODO remove Type from variant.doMove()
-            drawBoard(out, out2);
+            communicator.drawBoard(variant.getBoardState());
             if(!end_turn) {
-                attemptMove("Finish your move", in, out, out2);
+                attemptMove("Finish your move");
             }
 
         }
@@ -63,21 +49,14 @@ public class GameInstance implements Runnable {
     public void run() {
         System.out.println("Running game...");
 
-        drawBoard(outF, outS);
+        communicator.drawBoard(variant.getBoardState());
         //game loop
         do {
-            if(turn==1) {
-                outS.println("WAIT_FOR_MOVE");
-                attemptMove("Your move", inF, outF, outS);
-            }
-            else {
-                outF.println("WAIT_FOR_MOVE");
-                attemptMove("Your move", inS, outS, outF);
-            }
+            communicator.sendWaitForMoveRequest(turn);
+            attemptMove("Your move");
             turn = turn==1 ? 2 : 1;
         }
         while (variant.checkForWinningConditions()==Variant.Winner.NONE);
-        outF.println("GAME_END");
-        outS.println("GAME_END");
+        communicator.endGame();
     }
 }
