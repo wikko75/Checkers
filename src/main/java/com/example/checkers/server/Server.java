@@ -26,70 +26,60 @@ public class Server {
 
             System.out.println("Server is listening on port 4444");
 
-            while(true) {
+            try {
+                // connecting and initializing player one
+                Socket firstPlayer = serverSocket.accept();
+                System.out.println("First client connected");
+                System.out.println("Waiting for the second player");
 
-                try {
-                    // connecting and initializing player one
-                    Socket firstPlayer = serverSocket.accept();
-                    System.out.println("First client connected");
-                    System.out.println("Waiting for the second player");
+                // connecting and initializing player two
+                Socket secondPlayer = serverSocket.accept();
+                System.out.println("Second client connected");
 
-                    // connecting and initializing player two
-                    Socket secondPlayer = serverSocket.accept();
-                    System.out.println("Second client connected");
+                Communicator communicator = new Communicator(firstPlayer, secondPlayer);
+                communicator.initiate();
 
-                    Communicator communicator = new Communicator(firstPlayer, secondPlayer);
-                    communicator.initiate();
+                // game loop
+                while (true) {
+                    GameModeSelection gameModeSelection = new GameModeSelection(communicator);
+                    Thread gameModeSelectionThread = new Thread(gameModeSelection);
+                    gameModeSelectionThread.start();
+                    try {
+                        gameModeSelectionThread.join();
+                    } catch (InterruptedException ex) {
+                        System.err.println("Exception waiting for selected game mode");
+                        System.exit(1);
+                    }
+                    GameMode gameMode = gameModeSelection.getSelection();
+                    VariantBuilder variantBuilder;
 
-                    // game loop
-                    while (true) {
-                        GameModeSelection gameModeSelection = new GameModeSelection(communicator);
-                        Thread gameModeSelectionThread = new Thread(gameModeSelection);
-                        gameModeSelectionThread.start();
-                        try {
-                            gameModeSelectionThread.join();
-                        } catch (InterruptedException ex) {
-                            System.err.println("Exception waiting for selected game mode");
-                            System.exit(1);
+                    switch (gameMode) {
+                        case ITALIAN -> {
+                            System.out.println("Selected italian");
+                            variantBuilder = new ItalianVariantBuilder();
+                            startGame(communicator, variantBuilder);
                         }
-                        GameMode gameMode = gameModeSelection.getSelection();
-                        VariantBuilder variantBuilder;
-
-                        switch (gameMode) {
-                            case ITALIAN -> {
-                                System.out.println("Selected italian");
-                                variantBuilder = new ItalianVariantBuilder();
-                                startGame(communicator, variantBuilder);
-                            }
-                            case GERMAN -> {
-                                System.out.println("Selected german");
-                                variantBuilder = new GermanVariantBuilder();
-                                startGame(communicator, variantBuilder);
-                            }
-                            case POLISH -> {
-                                System.out.println("Selected polish");
-                                variantBuilder = new PolishVariantBuilder();
-                                startGame(communicator, variantBuilder);
-                            }
-                            // TODO: third variant
-                            case EXIT -> {
-                                communicator.terminate();
-                                System.exit(0);
-                            }
+                        case GERMAN -> {
+                            System.out.println("Selected german");
+                            variantBuilder = new GermanVariantBuilder();
+                            startGame(communicator, variantBuilder);
+                        }
+                        case POLISH -> {
+                            System.out.println("Selected polish");
+                            variantBuilder = new PolishVariantBuilder();
+                            startGame(communicator, variantBuilder);
+                        }
+                        case EXIT -> {
+                            communicator.terminate();
+                            System.exit(0);
                         }
                     }
                 }
-                    catch(IOException ex) {
-                    System.err.println("Problem contacting sockets, shutting down");
-                    System.exit(1);
-                }
-
-
-
-                // TODO: Musi byc dokldnie dwoch klientow
-
             }
-
+            catch(IOException ex) {
+                System.err.println("Problem contacting sockets, shutting down");
+                System.exit(1);
+            }
         } catch (IOException ex) {
             System.out.println("Server exception: " + ex.getMessage());
             ex.printStackTrace();

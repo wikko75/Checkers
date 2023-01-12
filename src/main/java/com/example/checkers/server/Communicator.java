@@ -33,30 +33,31 @@ public class Communicator {
     }
 
     /**
-     *Terminates communication */
+     *Tells client to terminate app */
     void terminate() {
         outF.println("{\"instruction\":\"terminate\"}");
         outS.println("{\"instruction\":\"terminate\"}");
     }
 
     /**
-     * Sends request for selecting game mode to players*/
+     * Sends request for selecting game mode to players
+     * player field determines which player should select game mode*/
     void sendGameModeSelectionRequest() {
         outF.println("{\"instruction\":\"select_game_mode\",\"player\":\"1\"}");
         outS.println("{\"instruction\":\"select_game_mode\",\"player\":\"1\"}");
     }
 
     /**
-     * Sends request for making moves by players */
+     * Sends request for making moves by players
+     * turn field determines whick player should move */
     void sendMoveRequest(int turn, String message) {
         outF.println("{\"instruction\":\"move\",\"player\":\""+turn+"\",\"message\":\""+message+"\"}");
         outS.println("{\"instruction\":\"move\",\"player\":\""+turn+"\",\"message\":\""+message+"\"}");
     }
 
-
-    void createBoard(int size) {
-        outF.println("{\"instruction\":\"create_board\",\"size\":\""+size+"\"}");
-        outS.println("{\"instruction\":\"create_board\",\"size\":\""+size+"\"}");
+    void createBoard(int size, boolean leftDownCornerBlack) {
+        outF.println("{\"instruction\":\"create_board\",\"size\":"+size+",\"black\":"+leftDownCornerBlack+"}");
+        outS.println("{\"instruction\":\"create_board\",\"size\":"+size+",\"black\":"+leftDownCornerBlack+"}");
     }
 
     void drawBoard(String boardState) {

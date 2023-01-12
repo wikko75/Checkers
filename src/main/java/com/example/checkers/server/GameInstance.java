@@ -41,14 +41,14 @@ public class GameInstance implements Runnable {
 
         }
         catch (Exception ex) {
-            //TODO handle exceptions from variant.doMove()
+            // TODO handle exceptions from variant.doMove()
         }
     }
 
     @Override
     public void run() {
         System.out.println("Running game...");
-        communicator.createBoard(variant.getBoardSize());
+        communicator.createBoard(variant.getBoardSize(), variant.getLeftDownCornerBlack());
 
         communicator.drawBoard(variant.getBoardState());
         //game loop
