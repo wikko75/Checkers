@@ -56,9 +56,14 @@ public class Server {
                         VariantBuilder variantBuilder;
 
                         switch (gameMode) {
-                            case BRAZILIAN -> {
-                                System.out.println("Selected brazilian");
-                                variantBuilder = new BrazilianVariantBuilder();
+                            case ITALIAN -> {
+                                System.out.println("Selected italian");
+                                variantBuilder = new ItalianVariantBuilder();
+                                startGame(communicator, variantBuilder);
+                            }
+                            case GERMAN -> {
+                                System.out.println("Selected german");
+                                variantBuilder = new GermanVariantBuilder();
                                 startGame(communicator, variantBuilder);
                             }
                             case POLISH -> {
