@@ -41,9 +41,9 @@ public class Communicator {
         outS.println("{\"instruction\":\"move\",\"player\":\""+turn+"\",\"message\":\""+message+"\"}");
     }
 
-    void createBoard(int size) {
-        outF.println("{\"instruction\":\"create_board\",\"size\":\""+size+"\"}");
-        outS.println("{\"instruction\":\"create_board\",\"size\":\""+size+"\"}");
+    void createBoard(int size, boolean leftDownCornerBlack) {
+        outF.println("{\"instruction\":\"create_board\",\"size\":"+size+",\"black\":"+leftDownCornerBlack+"}");
+        outS.println("{\"instruction\":\"create_board\",\"size\":"+size+",\"black\":"+leftDownCornerBlack+"}");
     }
 
     void drawBoard(String boardState) {
