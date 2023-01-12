@@ -85,6 +85,9 @@ public class Client extends Frame implements ActionListener, Runnable {
                         msg.setText("Wait for opponent's move");
                     }
                 }
+                case "create_board" -> {
+                    send.setEnabled(false);
+                }
                 case "draw_board" -> {
                     // TODO: reverse board for player 2
                     output.setText(json.getString("board_state"));

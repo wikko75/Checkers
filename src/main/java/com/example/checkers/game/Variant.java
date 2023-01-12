@@ -134,4 +134,7 @@ public class Variant {
         return leftDownCornerBlack;
     }
 
+    public int getBoardSize() {
+        return board.getSize();
+    }
 }
