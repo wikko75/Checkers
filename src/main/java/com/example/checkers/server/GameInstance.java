@@ -48,6 +48,7 @@ public class GameInstance implements Runnable {
     @Override
     public void run() {
         System.out.println("Running game...");
+        communicator.createBoard(variant.getBoardSize());
 
         communicator.drawBoard(variant.getBoardState());
         //game loop
