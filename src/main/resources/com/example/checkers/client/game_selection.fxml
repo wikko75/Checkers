@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.example.checkers.client.Controller"
-            prefHeight="400.0" prefWidth="600.0">
 
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.checkers.client.controllers.GameSelectionController">
+   <children>
+      <Button fx:id="button_italian" layoutX="250.0" layoutY="174.0" minWidth="100.0" mnemonicParsing="false" onAction="#selectGameMode" text="Italian" />
+      <Button fx:id="button_polish" layoutX="250.0" layoutY="148.0" minWidth="100.0" mnemonicParsing="false" onAction="#selectGameMode" text="Polish" />
+      <Button fx:id="button_german" layoutX="250.0" layoutY="200.0" minWidth="100.0" mnemonicParsing="false" onAction="#selectGameMode" prefHeight="26.0" prefWidth="54.0" text="German" />
+      <Button fx:id="button_exit" layoutX="250.0" layoutY="226.0" minWidth="100.0" mnemonicParsing="false" onAction="#selectGameMode" text="Exit" />
+      <Label layoutX="249.0" layoutY="131.0" text="Select game mode" />
+   </children>
 </AnchorPane>
