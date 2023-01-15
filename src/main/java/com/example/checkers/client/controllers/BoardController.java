@@ -3,12 +3,13 @@ package com.example.checkers.client.controllers;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 
-public abstract class BoardController extends Controller {
+public abstract class BoardController extends Controller implements Initializable{
     @FXML
     private Text board_state;
     @FXML
