@@ -83,6 +83,8 @@ public class Main extends Application {
         switch(json.getString("instruction")) {
             case "init" -> {
                 player = json.getInt("value");
+                ((BoardController)board8x8Controller).setWhite(player==1);
+                ((BoardController)board10x10Controller).setWhite(player==1);
             }
             case "select_game_mode" -> {
                 if (json.getInt("player")==player) {
