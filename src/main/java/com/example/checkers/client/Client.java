@@ -17,7 +17,7 @@ public class Client {
         in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
     }
 
-    void sendMessageToServer(String messageToServer) {
+    public void sendMessageToServer(String messageToServer) {
         out.println(messageToServer);
     }
 
