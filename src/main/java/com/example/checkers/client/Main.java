@@ -36,10 +36,10 @@ public class Main extends Application {
         FXMLLoader board8x8_loader = new FXMLLoader(getClass().getResource("board8x8.fxml"));
         FXMLLoader board10x10_loader = new FXMLLoader(getClass().getResource("board10x10.fxml"));
         // initializing Scenes
-        game_selection = new Scene(game_selection_loader.load(), 600, 400);
-        info_page = new Scene(info_page_loader.load(), 600, 400);
-        board8x8 = new Scene(board8x8_loader.load(), 800, 1000);
-        board10x10 = new Scene(board10x10_loader.load(), 800, 1000);
+        game_selection = new Scene(game_selection_loader.load());
+        info_page = new Scene(info_page_loader.load());
+        board8x8 = new Scene(board8x8_loader.load());
+        board10x10 = new Scene(board10x10_loader.load());
         // getting Controllers
         gameSelectionController = game_selection_loader.getController();
         infoPageController = info_page_loader.getController();
@@ -54,6 +54,7 @@ public class Main extends Application {
         stage.setTitle("Checkers client");
         stage.setScene(info_page);
         ((InfoPageController)infoPageController).setInfo("Wait for server response");
+        stage.setResizable(false);
         stage.show();
         startReceiving();
     }
