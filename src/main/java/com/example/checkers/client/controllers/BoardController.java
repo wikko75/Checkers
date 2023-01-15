@@ -56,7 +56,7 @@ public abstract class BoardController extends Controller implements Initializabl
             y2 = 9 - y2;
         }
         String move = x1+" "+y1+" "+x2+" "+y2;
-        client.sendMessageToServer(move);
+        sendToServer(move);
         System.out.println("Sending move: "+move);
     }
 
