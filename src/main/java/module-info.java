@@ -5,8 +5,7 @@ module com.example.checkers {
     requires org.json;
 
 
-    opens com.example.checkers to javafx.fxml;
-    exports com.example.checkers;
-    exports com.example.checkers.game;
+    opens com.example.checkers.client to javafx.fxml, javafx.graphics;
+    opens com.example.checkers.client.controllers to javafx.fxml, javafx.graphics;
     opens com.example.checkers.game to javafx.fxml;
 }
