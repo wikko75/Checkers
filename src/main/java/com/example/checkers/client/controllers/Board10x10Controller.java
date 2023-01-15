@@ -34,5 +34,10 @@ public class Board10x10Controller extends BoardController {
                 boardState[(99-i) / 10][(99-i) % 10] = fields[i];
             }
         }
+        for(int y=0; y<10; y++) {
+            for (int x = 0; x < 10; x++) {
+                updateIcon(x, y);
+            }
+        }
     }
 }

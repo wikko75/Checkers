@@ -121,12 +121,7 @@ public class Main extends Application {
             case "end_game" -> {
 
             }
-            case "terminate" -> {
-
-                try{ Thread.sleep(1000); }
-                catch(InterruptedException ex) {}
-                System.exit(0);
-            }
+            case "terminate" -> System.exit(0);
         }
     }
 
