@@ -31,10 +31,10 @@ public class Main extends Application {
             System.exit(1);
         }
         // initializing Loaders
-        FXMLLoader game_selection_loader = new FXMLLoader(getClass().getResource("game_selection.fxml"));
-        FXMLLoader info_page_loader = new FXMLLoader(getClass().getResource("info_page.fxml"));
-        FXMLLoader board8x8_loader = new FXMLLoader(getClass().getResource("board8x8.fxml"));
-        FXMLLoader board10x10_loader = new FXMLLoader(getClass().getResource("board10x10.fxml"));
+        FXMLLoader game_selection_loader = new FXMLLoader(getClass().getResource("fxml/game_selection.fxml"));
+        FXMLLoader info_page_loader = new FXMLLoader(getClass().getResource("fxml/info_page.fxml"));
+        FXMLLoader board8x8_loader = new FXMLLoader(getClass().getResource("fxml/board8x8.fxml"));
+        FXMLLoader board10x10_loader = new FXMLLoader(getClass().getResource("fxml/board10x10.fxml"));
         // initializing Scenes
         game_selection = new Scene(game_selection_loader.load());
         info_page = new Scene(info_page_loader.load());
