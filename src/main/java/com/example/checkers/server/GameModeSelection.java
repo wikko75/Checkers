@@ -24,10 +24,10 @@ public class GameModeSelection implements Runnable {
                 line = communicator.getClientInput(1);
                 System.out.println(line);
                 switch (line) {
-                    case "ITALIAN" -> selection = GameMode.ITALIAN;
-                    case "GERMAN" -> selection = GameMode.GERMAN;
-                    case "POLISH" -> selection = GameMode.POLISH;
-                    case "EXIT" -> selection = GameMode.EXIT;
+                    case "italian" -> selection = GameMode.ITALIAN;
+                    case "german" -> selection = GameMode.GERMAN;
+                    case "polish" -> selection = GameMode.POLISH;
+                    case "exit" -> selection = GameMode.EXIT;
                     default -> selection = GameMode.NOT_SELECTED;
                 }
             } while (selection == GameMode.NOT_SELECTED);
