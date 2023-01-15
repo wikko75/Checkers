@@ -45,10 +45,10 @@ public abstract class BoardController extends Controller implements Initializabl
     }
 
     private void sendMove(String id1, String id2) {
-        int x1 = id1.charAt(1) - '0';
-        int y1 = id1.charAt(2) - '0';
-        int x2 = id2.charAt(1) - '0';
-        int y2 = id2.charAt(2) - '0';
+        int x1 = id1.charAt(2) - '0';
+        int y1 = id1.charAt(1) - '0';
+        int x2 = id2.charAt(2) - '0';
+        int y2 = id2.charAt(1) - '0';
         if(!white) {
             x1 = 9 - x1;
             y1 = 9 - y1;
@@ -87,13 +87,17 @@ public abstract class BoardController extends Controller implements Initializabl
             ImageView clicked = (ImageView)event.getSource();
             System.out.println("Clicked: "+clicked.getId());
             if(selected==null) {
-                selected = clicked;
+                if(select(clicked)) {
+                    selected = clicked;
+                }
                 // TODO visible selection
             } else if(selected==clicked) {
+                updateIcon(selected);
                 selected = null;
                 // TODO remove visible selection
             } else {
                 sendMove(selected.getId(), clicked.getId());
+                updateIcon(selected);
                 selected = null;
                 // TODO remove visible selection
             }
@@ -124,13 +128,44 @@ public abstract class BoardController extends Controller implements Initializabl
         }
     }
 
-    private void selectIcon(int x, int y) {
+    private void updateIcon(ImageView field) {
+        int x = field.getId().charAt(2) - '0';
+        int y = field.getId().charAt(1) - '0';
+        updateIcon(x, y);
+    }
+
+
+    private boolean select(ImageView field) {
+        int x = field.getId().charAt(2) - '0';
+        int y = field.getId().charAt(1) - '0';
         boolean blackField = (leftDownCornerBlack && (x+y)%2==0) || (!leftDownCornerBlack && (x+y)%2==1);
+        boolean correct = false;
         switch(boardState[x][y]) {
-            case "WM" -> board[x][y].setImage(blackField ? bf_wm_sel : wf_wm_sel);
-            case "WK" -> board[x][y].setImage(blackField ? bf_wk_sel : wf_wk_sel);
-            case "BM" -> board[x][y].setImage(blackField ? bf_bm_sel : wf_bm_sel);
-            case "BK" -> board[x][y].setImage(blackField ? bf_bk_sel : wf_bk_sel);
+            case "WM" -> {
+                if(white) {
+                    board[x][y].setImage(blackField ? bf_wm_sel : wf_wm_sel);
+                    correct = true;
+                }
+            }
+            case "WK" -> {
+                if(white) {
+                    board[x][y].setImage(blackField ? bf_wk_sel : wf_wk_sel);
+                    correct = true;
+                }
+            }
+            case "BM" -> {
+                if(!white) {
+                    board[x][y].setImage(blackField ? bf_bm_sel : wf_bm_sel);
+                    correct = true;
+                }
+            }
+            case "BK" -> {
+                if(!white) {
+                    board[x][y].setImage(blackField ? bf_bk_sel : wf_bk_sel);
+                    correct = true;
+                }
+            }
         }
+        return correct;
     }
 }
