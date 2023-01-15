@@ -8,4 +8,9 @@ public class Board8x8Controller extends BoardController {
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
     }
+
+    @Override
+    public void setBoardState(String state) {
+
+    }
 }

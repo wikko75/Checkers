@@ -4,20 +4,35 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.text.Text;
+
+import java.util.Objects;
 
 public abstract class BoardController extends Controller implements Initializable{
     @FXML
-    private Text board_state;
-    @FXML
     private Label info;
     protected ImageView[][] board;
+    protected String[][] boardState;
     private boolean active;
     private ImageView selected;
-    //private Image bf, bf_wm, bf_wk, bf_bm, bf_bk, wf, wf_wm, wf_wk, wf_bm, wf_bm;
+    private final Image bf, bf_wm, bf_wk, bf_bm, bf_bk, wf, wf_wm, wf_wk, wf_bm, wf_bk;
     private boolean leftDownCornerBlack;
+    protected boolean white;
+
+    public BoardController() {
+        bf = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/com/example/checkers/client/controllers/icons/black_field-empty.png")));
+        bf_wm = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/com/example/checkers/client/controllers/icons/black_field-white_man.png")));
+        bf_wk = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/com/example/checkers/client/controllers/icons/black_field-white_king.png")));
+        bf_bm = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/com/example/checkers/client/controllers/icons/black_field-black_man.png")));
+        bf_bk = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/com/example/checkers/client/controllers/icons/black_field-black_king.png")));
+        wf = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/com/example/checkers/client/controllers/icons/white_field-empty.png")));
+        wf_wm = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/com/example/checkers/client/controllers/icons/white_field-white_man.png")));
+        wf_wk = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/com/example/checkers/client/controllers/icons/white_field-white_king.png")));
+        wf_bm = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/com/example/checkers/client/controllers/icons/white_field-black_man.png")));
+        wf_bk = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/com/example/checkers/client/controllers/icons/white_field-black_king.png")));
+    }
 
     private void sendMove(String id1, String id2) {
         String move = id1.charAt(1)+" "+id1.charAt(2)+" "+id2.charAt(1)+" "+id2.charAt(2);
@@ -33,11 +48,6 @@ public abstract class BoardController extends Controller implements Initializabl
             deactivate();
             Platform.runLater(() -> info.setText("Opponent's turn"));
         }
-    }
-
-    // TODO: overwrite for 8x8 and 10x10
-    public void setBoardState(String boardState) {
-        //Platform.runLater(() -> board_state.setText(boardState));
     }
 
     public void setLeftDownCornerBlack(boolean leftDownCornerBlack) {
@@ -76,4 +86,10 @@ public abstract class BoardController extends Controller implements Initializabl
             }
         }
     }
+
+    public void setWhite(boolean white) {
+        this.white = white;
+    }
+
+    public abstract void setBoardState(String state);
 }
