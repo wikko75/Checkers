@@ -18,6 +18,7 @@ public class Main extends Application {
     private Stage stage;
     private Scene game_selection, info_page, board8x8, board10x10;
     private Controller gameSelectionController, infoPageController, board8x8Controller, board10x10Controller;
+    private BoardController currentBoardController;
     private int player;
     @Override
     public void start(Stage stage) throws IOException {
@@ -37,8 +38,8 @@ public class Main extends Application {
         // initializing Scenes
         game_selection = new Scene(game_selection_loader.load(), 600, 400);
         info_page = new Scene(info_page_loader.load(), 600, 400);
-        board8x8 = new Scene(board8x8_loader.load(), 600, 400);
-        board10x10 = new Scene(board10x10_loader.load(), 600, 400);
+        board8x8 = new Scene(board8x8_loader.load(), 800, 1000);
+        board10x10 = new Scene(board10x10_loader.load(), 800, 1000);
         // getting Controllers
         gameSelectionController = game_selection_loader.getController();
         infoPageController = info_page_loader.getController();
@@ -91,27 +92,28 @@ public class Main extends Application {
                 }
             }
             case "move" -> {
-                if(json.getInt("player")==player) {
-
-                } else {
-
-                }
+                boolean turn = json.getInt("player") == player;
+                String message = json.getString("message");
+                currentBoardController.moveRequest(turn, message);
             }
             case "create_board" -> {
                 // TODO: reverse numeration for player 2
                 boolean leftDownCornerBlack = json.getBoolean("black");
                 if(json.getInt("size")==8) {
                     changeScene(board8x8);
-                    ((BoardController)board8x8Controller).setLeftDownCornerBlack(leftDownCornerBlack);
+                    currentBoardController = ((BoardController)board8x8Controller);
+                    currentBoardController.setLeftDownCornerBlack(leftDownCornerBlack);
                 }
                 else {
                     changeScene(board10x10);
-                    ((BoardController)board10x10Controller).setLeftDownCornerBlack(leftDownCornerBlack);
+                    currentBoardController = ((BoardController)board10x10Controller);
+                    currentBoardController.setLeftDownCornerBlack(leftDownCornerBlack);
                 }
             }
             case "draw_board" -> {
                 // TODO: reverse board for player 2
-
+                String boardState = json.getString("board_state");
+                currentBoardController.setBoardState(boardState);
             }
             case "end_game" -> {
 
