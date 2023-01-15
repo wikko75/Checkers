@@ -39,7 +39,7 @@ public abstract class BoardController extends Controller {
 
     // TODO: overwrite for 8x8 and 10x10
     public void setBoardState(String boardState) {
-        Platform.runLater(() -> board_state.setText(boardState));
+        //Platform.runLater(() -> board_state.setText(boardState));
     }
 
     public void setLeftDownCornerBlack(boolean leftDownCornerBlack) {
