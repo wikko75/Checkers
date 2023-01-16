@@ -187,11 +187,11 @@ public class Variant {
             }
         }
 
-        if (board.getPiece(x2, y2).getColor() == color) {
+        /*if (board.getPiece(x2, y2).getColor() == color) {
             // throw exception
             System.out.println("Can not capture your own piece!");
             return false;
-        }
+        }*/
 
         //if passed:
         board.removePiece(x1, y1);
@@ -204,16 +204,20 @@ public class Variant {
         int size = getBoardSize();
         // check for white kings
         for(int i=0; i<size; i++) {
-            if(board.getPiece(i, size-1).getColor()==Color.WHITE && board.getPiece(i, size-1).getType()==Type.MAN) {
-                board.removePiece(i, size-1);
-                board.addPiece(i, size-1, Color.WHITE, Type.KING);
+            if(board.getPiece(i, size-1)!=null) {
+                if (board.getPiece(i, size - 1).getColor() == Color.WHITE && board.getPiece(i, size - 1).getType() == Type.MAN) {
+                    board.removePiece(i, size - 1);
+                    board.addPiece(i, size - 1, Color.WHITE, Type.KING);
+                }
             }
         }
         // check for black kings
         for(int i=0; i<size; i++) {
-            if(board.getPiece(i, 0).getColor()==Color.BLACK && board.getPiece(i, 0).getType()==Type.MAN) {
-                board.removePiece(i, 0);
-                board.addPiece(i, 0, Color.BLACK, Type.KING);
+            if(board.getPiece(i, 0)!=null) {
+                if (board.getPiece(i, 0).getColor() == Color.BLACK && board.getPiece(i, 0).getType() == Type.MAN) {
+                    board.removePiece(i, 0);
+                    board.addPiece(i, 0, Color.BLACK, Type.KING);
+                }
             }
         }
     }
