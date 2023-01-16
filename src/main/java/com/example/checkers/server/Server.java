@@ -4,8 +4,17 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+/**
+ * Main class in com.example.checkers.server,
+ * handles socket connections and running threads
+ */
 public class Server {
 
+    /**
+     * Starts game of selected game mode
+     * @param communicator used for communicating between game thread and players
+     * @param variantBuilder builder for the selected game mode
+     */
     private static void startGame(Communicator communicator, VariantBuilder variantBuilder) {
         VariantDirector director = new VariantDirector(variantBuilder);
         GameInstance gameInstance = new GameInstance(communicator, director.getVariant());
@@ -20,6 +29,10 @@ public class Server {
         }
     }
 
+    /**
+     * Starts server, connects clients and starts threads
+     * @param args
+     */
     public static void main(String[] args) {
 
         try (ServerSocket serverSocket = new ServerSocket(4444)) {

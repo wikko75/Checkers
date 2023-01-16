@@ -7,6 +7,9 @@ import com.example.checkers.game.Variant;
 import java.io.*;
 import java.net.Socket;
 
+/**
+ * Runnable class that handles running game
+ */
 public class GameInstance implements Runnable {
 
     private final Communicator communicator;
@@ -18,6 +21,11 @@ public class GameInstance implements Runnable {
         this.variant = variant;
     }
 
+    /**
+     * Tells current player to move until they've done all correct moves
+     * Handles exceptions is {@link Variant#doMove(int, int, int, int, Color)} and notifies client accordingly
+     * @param message initial message for client
+     */
     private void attemptMove(String message) {
         if(variant.checkForWinningConditions()!= Variant.Winner.NONE) {
             return;
@@ -47,6 +55,9 @@ public class GameInstance implements Runnable {
         }
     }
 
+    /**
+     * Starts game thread
+     */
     @Override
     public void run() {
         System.out.println("Running game...");

@@ -2,6 +2,9 @@ package com.example.checkers.server;
 
 import java.io.*;
 
+/**
+ * Runnable class that handles game selection
+ */
 public class GameModeSelection implements Runnable {
 
     private final Communicator communicator;
@@ -12,6 +15,9 @@ public class GameModeSelection implements Runnable {
         selection = GameMode.NOT_SELECTED;
     }
 
+    /**
+     * Starts game selection thread
+     */
     @Override
     public void run() {
 
@@ -37,6 +43,10 @@ public class GameModeSelection implements Runnable {
         }
     }
 
+    /**
+     * Allows accessing selection from outside the class
+     * @return selected game mode
+     */
     public GameMode getSelection() {
         return selection;
     }
