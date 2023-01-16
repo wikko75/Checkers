@@ -47,16 +47,17 @@ public class Variant {
             return false;
         }
 
-        if (board.getPiece(x1, y1).getColor() != color || board.getPiece(x1, y1).getType() != type) {
+/*        if (board.getPiece(x1, y1).getColor() != color || board.getPiece(x1, y1).getType() != type) {
             //throw color exception
             System.out.println("Not your color!");
             return false;
-        }
+        }*/
+
         //-----------------------------------------------------------------------
 
         //variants of game rules
         //-----------------------------------------------------------------------
-        if (menCaptureKing && kingMovesManySquares && mustCaptureMaxPieces && manCaptureBackwards) {
+/*        if (menCaptureKing && kingMovesManySquares && mustCaptureMaxPieces && manCaptureBackwards) {
 
             if (board.getPiece(x1, y1).getType() == Type.MAN) {
 
@@ -98,8 +99,93 @@ public class Variant {
                     return true;
                 }
             }
+        }*/
+        if (board.getPiece(x1, y1).getColor() == Color.WHITE) {
+            if (x1 == 0) {
+                //capture
+                if (board.getPiece(x2,y2) == null && board.getPiece(x2 - 1, y2 - 1) != null && board.getPiece(x2 -1, y2 -1).getColor() != color) {
+                    board.removePiece(x1, y1);
+                    board.removePiece(x2 - 1, y2 - 1);
+                    board.addPiece(x2, y2, color, type);
+                    return true;
+                }
+                //simple movement
+                if (board.getPiece(x2, y2) == null && (x2 == x1 + 1 && y2 == y1 + 1)) {
+                    board.removePiece(x1, y1);
+                    board.addPiece(x2, y2, color, type);
+                    return true;
+                }
+            } else if (x1 == getBoardSize() -1 ) {
+                //capture
+                if (board.getPiece(x2,y2) == null && board.getPiece(x2 + 1, y2 - 1) != null && board.getPiece(x2 + 1, y2 - 1).getColor() != color) {
+                    board.removePiece(x1, y1);
+                    board.removePiece(x2 + 1, y2 - 1);
+                    board.addPiece(x2, y2, color, type);
+                    return true;
+                }
+                //simple movement
+                if (board.getPiece(x2, y2) == null && (x2 == x1 - 1 && y2 == y1 + 1)) {
+                    board.removePiece(x1, y1);
+                    board.addPiece(x2, y2, color, type);
+                    return true;
+                }
+            }
+            else {
+                //capture
+                if (board.getPiece(x2,y2) == null && ((board.getPiece(x2 - 1, y2 - 1) != null && board.getPiece(x2 -1, y2 -1).getColor() != color)
+                        || (board.getPiece(x2 + 1, y2 - 1) != null && board.getPiece(x2 + 1, y2 - 1).getColor() != color))) {
+
+                    board.removePiece(x1, y1);
+                    if (board.getPiece(x2 - 1, y2 - 1) != null && board.getPiece(x2 - 1, y2 - 1).getColor() != color) {
+                        board.removePiece(x2 - 1, y2 - 1);
+                        board.addPiece(x2, y2, color, type);
+                    } else {
+                        board.removePiece(x2 + 1, y2 - 1);
+                        board.addPiece(x2,y2,color,type);
+                    }
+                    return true;
+                }
+                //simple movement
+                if (board.getPiece(x2, y2) == null && (x2 == x1 + 1 || x2 == x1 - 1 && y2 == y1 + 1)) {
+                    board.removePiece(x1, y1);
+                    board.addPiece(x2, y2, color, type);
+                    return true;
+                }
+            }
         }
 
+
+        if (board.getPiece(x1, y1).getColor() == Color.BLACK) {
+            if (x1 == 0) {
+                /*if (board.getPiece(x2,y2) == null && board.getPiece(x2 + 1, y2 - 1) != null && board.getPiece(x2 + 1, y2 - 1).getColor() != color) {
+                    board.removePiece(x1, y1);
+                    board.addPiece(x2, y2, color, type);
+                    return true;
+                }*/
+                //simple movement
+                if (board.getPiece(x2, y2) == null && (x2 == x1 + 1 && y2 == y1 - 1)) {
+                    board.removePiece(x1, y1);
+                    board.addPiece(x2, y2, color, type);
+                    return true;
+                }
+            } else if (x1 == getBoardSize() -1 ) {
+                //simple movement
+                if (board.getPiece(x2, y2) == null && (x2 == x1 - 1 && y2 == y1 - 1)) {
+                    board.removePiece(x1, y1);
+                    board.addPiece(x2, y2, color, type);
+                    return true;
+                }
+            }
+
+            else {
+                //simple movement
+                if (board.getPiece(x2, y2) == null && (x2 == x1 + 1 || x2 == x1 - 1 && y2 == y1 - 1)) {
+                    board.removePiece(x1, y1);
+                    board.addPiece(x2, y2, color, type);
+                    return true;
+                }
+            }
+        }
 
         if (board.getPiece(x2, y2).getColor() == color) {
             // throw exception
