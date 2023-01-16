@@ -52,6 +52,7 @@ public class GameInstance implements Runnable {
         catch (Exception ex) {
             // TODO handle exceptions from variant.doMove()
             ex.printStackTrace();
+            attemptMove((ex.getClass()).toString());
         }
     }
 
