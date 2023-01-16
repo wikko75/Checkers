@@ -242,9 +242,9 @@ public abstract class BoardController extends Controller implements Initializabl
     public void endGame(String winner) {
         deactivate();
         switch(winner) {
-            case "white" -> Platform.runLater(() -> info.setText("White won"));
-            case "black" -> Platform.runLater(() -> info.setText("Black won"));
-            case "draw" -> Platform.runLater(() -> info.setText("Draw"));
+            case "WHITE" -> Platform.runLater(() -> info.setText("White won"));
+            case "BLACK" -> Platform.runLater(() -> info.setText("Black won"));
+            case "DRAW" -> Platform.runLater(() -> info.setText("Draw"));
         }
         if(white) {
             new_game.setVisible(true);

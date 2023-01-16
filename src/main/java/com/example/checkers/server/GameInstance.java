@@ -60,7 +60,7 @@ public class GameInstance implements Runnable {
             turn = turn==1 ? 2 : 1;
         }
         while (variant.checkForWinningConditions()==Variant.Winner.NONE);
-        communicator.endGame();
+        communicator.endGame(variant.checkForWinningConditions().toString());
         try {
             communicator.getClientInput(1);
         } catch (IOException e) {
