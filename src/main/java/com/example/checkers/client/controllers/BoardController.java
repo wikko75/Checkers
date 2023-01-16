@@ -1,8 +1,10 @@
 package com.example.checkers.client.controllers;
 
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -12,7 +14,9 @@ import java.util.Objects;
 
 public abstract class BoardController extends Controller implements Initializable{
     @FXML
-    private Label info;
+    private Label info, end_game_info;
+    @FXML
+    private Button new_game;
     protected ImageView[][] board;
     protected String[][] boardState;
     private boolean active;
@@ -60,11 +64,11 @@ public abstract class BoardController extends Controller implements Initializabl
         this.leftDownCornerBlack = leftDownCornerBlack;
     }
 
-    private  void activate() {
+    private void activate() {
         active = true;
     }
 
-    private  void deactivate() {
+    private void deactivate() {
         active = false;
     }
 
@@ -76,16 +80,13 @@ public abstract class BoardController extends Controller implements Initializabl
                 if(select(clicked)) {
                     selected = clicked;
                 }
-                // TODO visible selection
             } else if(selected==clicked) {
                 updateIcon(selected);
                 selected = null;
-                // TODO remove visible selection
             } else {
                 sendMove(selected.getId(), clicked.getId());
                 updateIcon(selected);
                 selected = null;
-                // TODO remove visible selection
             }
             if(selected!=null) {
                 System.out.println("Selected not null");
@@ -153,5 +154,30 @@ public abstract class BoardController extends Controller implements Initializabl
             }
         }
         return correct;
+    }
+
+    public void endGame(String winner) {
+        deactivate();
+        switch(winner) {
+            case "white" -> Platform.runLater(() -> info.setText("White won"));
+            case "black" -> Platform.runLater(() -> info.setText("Black won"));
+            case "draw" -> Platform.runLater(() -> info.setText("Draw"));
+        }
+        if(white) {
+            new_game.setVisible(true);
+            new_game.setDisable(false);
+        } else {
+            end_game_info.setVisible(true);
+        }
+    }
+
+    public void hideEndGameInfo() {
+        new_game.setDisable(true);
+        new_game.setVisible(false);
+        end_game_info.setVisible(false);
+    }
+
+    public void newGame(ActionEvent event) {
+        sendToServer("new_game");
     }
 }

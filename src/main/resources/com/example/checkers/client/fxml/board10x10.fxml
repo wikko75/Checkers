@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -142,5 +143,15 @@
              <ImageView fx:id="f99" fitHeight="50.0" fitWidth="50.0" onMouseClicked="#fieldClicked" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="9" GridPane.rowIndex="0" />
          </children>
       </GridPane>
+      <Label fx:id="end_game_info" alignment="CENTER" layoutX="200.0" layoutY="635.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="300.0" text="Wait for player one to start a new game" visible="false">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <Button fx:id="new_game" layoutX="300.0" layoutY="635.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#newGame" prefHeight="30.0" prefWidth="100.0" text="New game" visible="false">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>

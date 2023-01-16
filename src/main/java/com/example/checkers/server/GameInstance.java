@@ -59,5 +59,10 @@ public class GameInstance implements Runnable {
         }
         while (variant.checkForWinningConditions()==Variant.Winner.NONE);
         communicator.endGame();
+        try {
+            communicator.getClientInput(1);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

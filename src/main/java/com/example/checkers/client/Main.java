@@ -17,7 +17,9 @@ public class Main extends Application {
     private Client client;
     private Stage stage;
     private Scene game_selection, info_page, board8x8, board10x10;
-    private Controller gameSelectionController, infoPageController, board8x8Controller, board10x10Controller;
+    private Controller infoPageController;
+    private Controller board8x8Controller;
+    private Controller board10x10Controller;
     private BoardController currentBoardController;
     private int player;
     @Override
@@ -41,7 +43,7 @@ public class Main extends Application {
         board8x8 = new Scene(board8x8_loader.load());
         board10x10 = new Scene(board10x10_loader.load());
         // getting Controllers
-        gameSelectionController = game_selection_loader.getController();
+        Controller gameSelectionController = game_selection_loader.getController();
         infoPageController = info_page_loader.getController();
         board8x8Controller = board8x8_loader.getController();
         board10x10Controller = board10x10_loader.getController();
@@ -105,13 +107,13 @@ public class Main extends Application {
                 if(json.getInt("size")==8) {
                     changeScene(board8x8);
                     currentBoardController = ((BoardController)board8x8Controller);
-                    currentBoardController.setLeftDownCornerBlack(leftDownCornerBlack);
                 }
                 else {
                     changeScene(board10x10);
                     currentBoardController = ((BoardController)board10x10Controller);
-                    currentBoardController.setLeftDownCornerBlack(leftDownCornerBlack);
                 }
+                currentBoardController.setLeftDownCornerBlack(leftDownCornerBlack);
+                currentBoardController.hideEndGameInfo();
             }
             case "draw_board" -> {
                 // TODO: reverse board for player 2
@@ -119,7 +121,8 @@ public class Main extends Application {
                 currentBoardController.setBoardState(boardState);
             }
             case "end_game" -> {
-
+                String winner = json.getString("winner");
+                currentBoardController.endGame(json.getString(winner));
             }
             case "terminate" -> System.exit(0);
         }
