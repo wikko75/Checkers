@@ -104,7 +104,7 @@
             <Font size="15.0" />
          </font>
       </Label>
-      <Label fx:id="end_game_jnfo" alignment="CENTER" layoutX="100.0" layoutY="535.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="400.0" text="Wait for player one to start a new game" visible="false">
+      <Label fx:id="end_game_info" alignment="CENTER" layoutX="100.0" layoutY="535.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="400.0" text="Wait for player one to start a new game" visible="false">
          <font>
             <Font size="15.0" />
          </font>

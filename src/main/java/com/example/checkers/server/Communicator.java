@@ -49,28 +49,46 @@ public class Communicator {
 
     /**
      * Sends request for making moves by players
-     * turn field determines whick player should move */
+     * turn field determines which player should move */
     void sendMoveRequest(int turn, String message) {
         outF.println("{\"instruction\":\"move\",\"player\":\""+turn+"\",\"message\":\""+message+"\"}");
         outS.println("{\"instruction\":\"move\",\"player\":\""+turn+"\",\"message\":\""+message+"\"}");
     }
 
+    /**
+     * Tells clients to prepare board scene
+     * @param size size of the board
+     * @param leftDownCornerBlack color coding of the board
+     */
     void createBoard(int size, boolean leftDownCornerBlack) {
         outF.println("{\"instruction\":\"create_board\",\"size\":"+size+",\"black\":"+leftDownCornerBlack+"}");
         outS.println("{\"instruction\":\"create_board\",\"size\":"+size+",\"black\":"+leftDownCornerBlack+"}");
     }
 
+    /**
+     * Sends current board state to clients
+     * @param boardState contains information about all pieces on the board
+     */
     void drawBoard(String boardState) {
         outF.println("{\"instruction\":\"draw_board\",\"board_state\":\""+boardState+"\"}");
         outS.println("{\"instruction\":\"draw_board\",\"board_state\":\""+boardState+"\"}");
     }
 
-    void endGame() {
-        // TODO
-        outF.println("{\"instruction\":\"end_game\",\"winner\":\"white\"}");
-        outS.println("{\"instruction\":\"end_game\",\"winner\":\"white\"}");
+    /**
+     * Tells client to end the game
+     * @param winner winner
+     */
+    void endGame(String winner) {
+        outF.println("{\"instruction\":\"end_game\",\"winner\":\""+winner+"\"}");
+        outS.println("{\"instruction\":\"end_game\",\"winner\":\""+winner+"\"}");
     }
 
+    /**
+     * waits for input from client using readLine() and returns message
+     * @param client 1 - client one, 2 - client two
+     * @return content of "message" field in received json
+     * @throws IOException
+     */
     String getClientInput(int client) throws IOException {
         String input;
         if(client == 1) {
