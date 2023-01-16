@@ -30,7 +30,8 @@ public class Variant {
         board = new Board(boardSize,leftDownCornerBlack);
     }
 
-    public boolean doMove(int x1, int y1, int x2, int y2, Color color, Type type){
+    public boolean doMove(int x1, int y1, int x2, int y2, Color color){
+        Type type = board.getPiece(x1, y1).getType();
 
         //general validation
         //-----------------------------------------------------------------------
@@ -208,6 +209,7 @@ public class Variant {
                 if (board.getPiece(i, size - 1).getColor() == Color.WHITE && board.getPiece(i, size - 1).getType() == Type.MAN) {
                     board.removePiece(i, size - 1);
                     board.addPiece(i, size - 1, Color.WHITE, Type.KING);
+                    System.out.println("White king!");
                 }
             }
         }
@@ -218,6 +220,7 @@ public class Variant {
                     board.removePiece(i, 0);
                     board.addPiece(i, 0, Color.BLACK, Type.KING);
                 }
+                System.out.println("Black king!");
             }
         }
     }

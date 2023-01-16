@@ -23,6 +23,7 @@ public class GameInstance implements Runnable {
             return;
         }
         try {
+            communicator.drawBoard(variant.getBoardState());
             communicator.sendMoveRequest(turn, message);
             String line = communicator.getClientInput(turn);
             String[] cords = line.split("\\W+");
@@ -32,7 +33,7 @@ public class GameInstance implements Runnable {
             int y2 = Integer.parseInt(cords[3]);
             Color color = turn==1 ? Color.WHITE : Color.BLACK;
 
-            boolean end_turn = variant.doMove(x1, y1, x2, y2, color, Type.MAN);
+            boolean end_turn = variant.doMove(x1, y1, x2, y2, color);
             //TODO remove Type from variant.doMove()
             communicator.drawBoard(variant.getBoardState());
             if(!end_turn) {
