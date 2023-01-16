@@ -1,5 +1,7 @@
 package com.example.checkers.game;
 
+import com.example.checkers.client.Main;
+
 public class Variant {
 
     private final Board board;
@@ -48,158 +50,82 @@ public class Variant {
             return false;
         }
 
-/*        if (board.getPiece(x1, y1).getColor() != color || board.getPiece(x1, y1).getType() != type) {
-            //throw color exception
-            System.out.println("Not your color!");
-            return false;
-        }*/
 
-        //-----------------------------------------------------------------------
-
-        //variants of game rules
-        //-----------------------------------------------------------------------
-/*        if (menCaptureKing && kingMovesManySquares && mustCaptureMaxPieces && manCaptureBackwards) {
+        if (board.getPiece(x1, y1).getColor() == Color.WHITE) {
 
             if (board.getPiece(x1, y1).getType() == Type.MAN) {
 
-                if (board.getPiece(x1 - 1, y1 + 1) != null && board.getPiece(x1 - 2, y1 + 2) == null ||
-                        board.getPiece(x1 + 1, y1 + 1) != null && board.getPiece(x1 + 2, y1 + 2) == null ||
-                        board.getPiece(x1 - 1, y1 - 1) != null && board.getPiece(x1 - 2, y1 - 2) == null ||
-                        board.getPiece(x1 + 1, y1 - 1) != null && board.getPiece(x1 + 2, y1 - 2) == null) {
+                int offsetX = Math.abs(x1 - x2);
+                int offsetY = y2 - y1;
 
-                    if (board.getPiece(x1 - 1, y1 - 1).getColor() == color && board.getPiece(x1 + 1, y1 - 1).getColor() == color) {
-
-                        if (x2 != x1 + 2 && x2 != x1 - 2 || y2 != y1 + 2) {
-                            //throw exception
-                            System.out.println("Wrong movement!");
-                            return false;
-                        }
-
-                        board.removePiece(x1, y1);
-                        board.addPiece(x2, y2, color, type);
+                if (offsetX == 1 && offsetY == 1) {
+                    if (board.getPiece(x2, y2) == null) {
+                        board.addPiece(x2,y2,color, board.getPiece(x1,y1).getType());
+                        board.removePiece(x1,y1);
+                        return true;
+                    }
+                }
+                else {
+                    if (offsetX == 2 && offsetY == 2) {
                         if (x2 > x1) {
-                            board.removePiece(x2 - 1, y2 - 1);
-                        } else {
-                            board.removePiece(x2 + 1, y2 - 1);
+                            if (board.getPiece(x2 - 1, y2 - 1) != null) {
+                                board.addPiece(x2, y2, color, board.getPiece(x1, y1).getType());
+                                board.removePiece(x2 - 1, y2 - 1);
+                                board.removePiece(x1, y1);
+                                return true;
+                            }
+                        } else if(x2 < x1){
+                            if (board.getPiece(x2 + 1, y2 - 1) != null) {
+                                board.addPiece(x2, y2, color, board.getPiece(x1, y1).getType());
+                                board.removePiece(x2 + 1, y2 - 1);
+                                board.removePiece(x1, y1);
+                                return true;
+                                }
+                            }
+                         }
+                    }
+                }
+                else {
+                    //king
+            }
+            } else if (board.getPiece(x1, y1).getColor() == Color.BLACK) {
+                if(type == Type.MAN){
+                    int offsetX = Math.abs(x1 - x2);
+                    int offsetY = Math.abs(y2 - y1);
+
+                    if (offsetX == 1 && offsetY == 1) {
+                        if (board.getPiece(x2, y2) == null) {
+                            board.addPiece(x2,y2,color, board.getPiece(x1,y1).getType());
+                            board.removePiece(x1,y1);
+                            return true;
                         }
-
                     } else {
-
+                        if (offsetX == 2 && offsetY == 2) {
+                            if (x2 > x1) {
+                                if (board.getPiece(x2 - 1, y2 + 1) != null) {
+                                    board.addPiece(x2, y2, color, board.getPiece(x1, y1).getType());
+                                    board.removePiece(x2 - 1, y2 + 1);
+                                    board.removePiece(x1, y1);
+                                    return true;
+                                }
+                            } else if(x2 < x1){
+                                if (board.getPiece(x2 + 1, y2 + 1) != null) {
+                                    board.addPiece(x2, y2, color, board.getPiece(x1, y1).getType());
+                                    board.removePiece(x2 + 1, y2 + 1);
+                                    board.removePiece(x1, y1);
+                                    return true;
+                                }
+                            }
+                        }
                     }
+                } else {
+                    //king
                 }
 
-                if (x2 != x1 + 1 && x2 != x1 - 1 || y2 != y1 + 1 && y2 != y1 -1) {
-                    //throw exception
-                    System.out.println("Wrong movement!");
-                    return false;
-                }
-                //simple movement
-                if (board.getPiece(x2, y2) == null && (x2 == x1 + 1 || x2 == x1 - 1 && y2 == y1 + 1)) {
-                    board.removePiece(x1, y1);
-                    board.addPiece(x2, y2, color, type);
-                    return true;
-                }
-            }
-        }*/
-        if (board.getPiece(x1, y1).getColor() == Color.WHITE) {
-            if (x1 == 0) {
-                //capture
-                if (board.getPiece(x2,y2) == null && board.getPiece(x2 - 1, y2 - 1) != null && board.getPiece(x2 -1, y2 -1).getColor() != color) {
-                    board.removePiece(x1, y1);
-                    board.removePiece(x2 - 1, y2 - 1);
-                    board.addPiece(x2, y2, color, type);
-                    return true;
-                }
-                //simple movement
-                if (board.getPiece(x2, y2) == null && (x2 == x1 + 1 && y2 == y1 + 1)) {
-                    board.removePiece(x1, y1);
-                    board.addPiece(x2, y2, color, type);
-                    return true;
-                }
-            } else if (x1 == getBoardSize() -1 ) {
-                //capture
-                if (board.getPiece(x2,y2) == null && board.getPiece(x2 + 1, y2 - 1) != null && board.getPiece(x2 + 1, y2 - 1).getColor() != color) {
-                    board.removePiece(x1, y1);
-                    board.removePiece(x2 + 1, y2 - 1);
-                    board.addPiece(x2, y2, color, type);
-                    return true;
-                }
-                //simple movement
-                if (board.getPiece(x2, y2) == null && (x2 == x1 - 1 && y2 == y1 + 1)) {
-                    board.removePiece(x1, y1);
-                    board.addPiece(x2, y2, color, type);
-                    return true;
-                }
-            }
-            else {
-                //capture
-                if (board.getPiece(x2,y2) == null && ((board.getPiece(x2 - 1, y2 - 1) != null && board.getPiece(x2 -1, y2 -1).getColor() != color)
-                        || (board.getPiece(x2 + 1, y2 - 1) != null && board.getPiece(x2 + 1, y2 - 1).getColor() != color))) {
-
-                    board.removePiece(x1, y1);
-                    if (board.getPiece(x2 - 1, y2 - 1) != null && board.getPiece(x2 - 1, y2 - 1).getColor() != color) {
-                        board.removePiece(x2 - 1, y2 - 1);
-                        board.addPiece(x2, y2, color, type);
-                    } else {
-                        board.removePiece(x2 + 1, y2 - 1);
-                        board.addPiece(x2,y2,color,type);
-                    }
-                    return true;
-                }
-                //simple movement
-                if (board.getPiece(x2, y2) == null && (x2 == x1 + 1 || x2 == x1 - 1 && y2 == y1 + 1)) {
-                    board.removePiece(x1, y1);
-                    board.addPiece(x2, y2, color, type);
-                    return true;
-                }
-            }
         }
-
-
-        if (board.getPiece(x1, y1).getColor() == Color.BLACK) {
-            if (x1 == 0) {
-                /*if (board.getPiece(x2,y2) == null && board.getPiece(x2 + 1, y2 - 1) != null && board.getPiece(x2 + 1, y2 - 1).getColor() != color) {
-                    board.removePiece(x1, y1);
-                    board.addPiece(x2, y2, color, type);
-                    return true;
-                }*/
-                //simple movement
-                if (board.getPiece(x2, y2) == null && (x2 == x1 + 1 && y2 == y1 - 1)) {
-                    board.removePiece(x1, y1);
-                    board.addPiece(x2, y2, color, type);
-                    return true;
-                }
-            } else if (x1 == getBoardSize() -1 ) {
-                //simple movement
-                if (board.getPiece(x2, y2) == null && (x2 == x1 - 1 && y2 == y1 - 1)) {
-                    board.removePiece(x1, y1);
-                    board.addPiece(x2, y2, color, type);
-                    return true;
-                }
-            }
-
-            else {
-                //simple movement
-                if (board.getPiece(x2, y2) == null && (x2 == x1 + 1 || x2 == x1 - 1 && y2 == y1 - 1)) {
-                    board.removePiece(x1, y1);
-                    board.addPiece(x2, y2, color, type);
-                    return true;
-                }
-            }
-        }
-
-        /*if (board.getPiece(x2, y2).getColor() == color) {
-            // throw exception
-            System.out.println("Can not capture your own piece!");
-            return false;
-        }*/
-
-        //if passed:
-        board.removePiece(x1, y1);
-        board.addPiece(x2, y2, color, type);
-
-        return true;
+        return false;
     }
+
 
     public void checkForKings() {
         int size = getBoardSize();
