@@ -23,6 +23,23 @@ public class Board10x10Controller extends BoardController {
     }
 
     @Override
+    protected void sendMove(String id1, String id2) {
+        int x1 = id1.charAt(2) - '0';
+        int y1 = id1.charAt(1) - '0';
+        int x2 = id2.charAt(2) - '0';
+        int y2 = id2.charAt(1) - '0';
+        if(!white) {
+            x1 = 9 - x1;
+            y1 = 9 - y1;
+            x2 = 9 - x2;
+            y2 = 9 - y2;
+        }
+        String move = x1+" "+y1+" "+x2+" "+y2;
+        sendToServer(move);
+        System.out.println("Sending move: "+move);
+    }
+
+    @Override
     public void setBoardState(String state) {
         String[] fields = state.split("\\W+");
         if(white) {

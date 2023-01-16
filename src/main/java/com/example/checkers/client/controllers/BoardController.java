@@ -44,21 +44,7 @@ public abstract class BoardController extends Controller implements Initializabl
         wf_bk_sel = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/com/example/checkers/client/controllers/icons/white_field-black_king-sel.png")));
     }
 
-    private void sendMove(String id1, String id2) {
-        int x1 = id1.charAt(2) - '0';
-        int y1 = id1.charAt(1) - '0';
-        int x2 = id2.charAt(2) - '0';
-        int y2 = id2.charAt(1) - '0';
-        if(!white) {
-            x1 = 9 - x1;
-            y1 = 9 - y1;
-            x2 = 9 - x2;
-            y2 = 9 - y2;
-        }
-        String move = x1+" "+y1+" "+x2+" "+y2;
-        sendToServer(move);
-        System.out.println("Sending move: "+move);
-    }
+    protected abstract void sendMove(String id1, String id2);
 
     public void moveRequest(boolean turn, String message) {
         if(turn) {
