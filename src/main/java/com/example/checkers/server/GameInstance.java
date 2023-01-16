@@ -55,6 +55,7 @@ public class GameInstance implements Runnable {
         //game loop
         do {
             attemptMove("Your move");
+            variant.checkForKings();
             turn = turn==1 ? 2 : 1;
         }
         while (variant.checkForWinningConditions()==Variant.Winner.NONE);

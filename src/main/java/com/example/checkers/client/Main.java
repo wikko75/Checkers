@@ -13,15 +13,54 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.net.Socket;
 
+/**
+ * Main.class starts client app, initializes GUI and handles operations
+ */
 public class Main extends Application {
+    /**
+     * Object of Client.class used to commuicate with server
+     */
     private Client client;
+    /**
+     * Main stage
+     */
     private Stage stage;
-    private Scene game_selection, info_page, board8x8, board10x10;
+    /**
+     * Scenes used for selecting game mode
+     */
+    private Scene game_selection;
+    /**
+     * Scene used to display information
+     */
+    private Scene info_page;
+    /**
+     * Scenes displaying 8x8 and 10x10 playing boards
+     */
+    private Scene board8x8, board10x10;
+    /**
+     * Controller for info_page scene
+     */
     private Controller infoPageController;
-    private Controller board8x8Controller;
-    private Controller board10x10Controller;
+    /**
+     * Controllers for board8x8 and board10x0 scenes
+     */
+    private BoardController board8x8Controller, board10x10Controller;
+    /**
+     * Pointer to controller of current board scene
+     */
     private BoardController currentBoardController;
+    /**
+     * 1 - player one
+     * 2 - player two
+     * Used for handling server commands, which execution differs by player
+     */
     private int player;
+
+    /**
+     * Start method, initializes the application
+     * @param stage
+     * @throws IOException
+     */
     @Override
     public void start(Stage stage) throws IOException {
         this.stage = stage;
@@ -61,10 +100,18 @@ public class Main extends Application {
         startReceiving();
     }
 
+    /**
+     * Main method only uses the launch() method
+     * @param args
+     */
     public static void main(String[] args) {
         launch();
     }
 
+    /**
+     * Starts receiving from server daemon thread
+     * calls {@link #handleServerCommand(String serverCommand)}
+     */
     private void startReceiving() {
         Thread receiverThread = new Thread(() -> {
             while (client.isConnected()) {
@@ -79,14 +126,18 @@ public class Main extends Application {
         receiverThread.start();
     }
 
+    /**
+     * Implements handling for commands sent by server
+     * @param serverCommand
+     */
     private void handleServerCommand(String serverCommand) {
         JSONObject json = new JSONObject(serverCommand);
 
         switch(json.getString("instruction")) {
             case "init" -> {
                 player = json.getInt("value");
-                ((BoardController)board8x8Controller).setWhite(player==1);
-                ((BoardController)board10x10Controller).setWhite(player==1);
+                board8x8Controller.setWhite(player==1);
+                board10x10Controller.setWhite(player==1);
             }
             case "select_game_mode" -> {
                 if (json.getInt("player")==player) {
@@ -102,21 +153,19 @@ public class Main extends Application {
                 currentBoardController.moveRequest(turn, message);
             }
             case "create_board" -> {
-                // TODO: reverse numeration for player 2
                 boolean leftDownCornerBlack = json.getBoolean("black");
                 if(json.getInt("size")==8) {
                     changeScene(board8x8);
-                    currentBoardController = ((BoardController)board8x8Controller);
+                    currentBoardController = board8x8Controller;
                 }
                 else {
                     changeScene(board10x10);
-                    currentBoardController = ((BoardController)board10x10Controller);
+                    currentBoardController = board10x10Controller;
                 }
                 currentBoardController.setLeftDownCornerBlack(leftDownCornerBlack);
                 currentBoardController.hideEndGameInfo();
             }
             case "draw_board" -> {
-                // TODO: reverse board for player 2
                 String boardState = json.getString("board_state");
                 currentBoardController.setBoardState(boardState);
             }
@@ -128,6 +177,10 @@ public class Main extends Application {
         }
     }
 
+    /**
+     * Changes scene using Platform.runLater()
+     * @param scene scene to be set
+     */
     private  void changeScene(Scene scene) {
         Platform.runLater(() -> stage.setScene(scene));
     }

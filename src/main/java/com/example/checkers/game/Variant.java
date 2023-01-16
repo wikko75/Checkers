@@ -200,7 +200,7 @@ public class Variant {
         return true;
     }
 
-    void checkForKings() {
+    public void checkForKings() {
 
     }
 

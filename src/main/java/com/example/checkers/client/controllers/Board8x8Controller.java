@@ -8,7 +8,13 @@ import javafx.scene.layout.GridPane;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * Extends BoardController with functionality for 8x8 board
+ */
 public class Board8x8Controller extends BoardController {
+    /**
+     * GridPane holding ImageView object representing board fields
+     */
     @FXML
     private GridPane boardPane;
     @Override
