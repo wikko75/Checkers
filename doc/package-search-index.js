@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"m":"com.example.checkers","l":"com.example.checkers.client"},{"m":"com.example.checkers","l":"com.example.checkers.client.controllers"},{"m":"com.example.checkers","l":"com.example.checkers.game"},{"m":"com.example.checkers","l":"com.example.checkers.server"}];updateSearchResults();

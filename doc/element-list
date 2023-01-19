@@ -1,0 +1,5 @@
+module:com.example.checkers
+com.example.checkers.client
+com.example.checkers.client.controllers
+com.example.checkers.game
+com.example.checkers.server
