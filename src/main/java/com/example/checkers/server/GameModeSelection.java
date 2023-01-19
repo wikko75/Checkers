@@ -30,7 +30,6 @@ public class GameModeSelection implements Runnable {
                 case "german" -> selection = GameMode.GERMAN;
                 case "polish" -> selection = GameMode.POLISH;
                 case "exit" -> selection = GameMode.EXIT;
-                default -> selection = GameMode.NOT_SELECTED;
             }
         }
         catch(IOException ex) {
