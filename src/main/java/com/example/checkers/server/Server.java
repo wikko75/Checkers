@@ -86,6 +86,10 @@ public class Server {
                             communicator.terminate();
                             System.exit(0);
                         }
+                        case NOT_SELECTED -> {
+                            System.err.println("Problem in GameModeSelection");
+                            System.exit(1);
+                        }
                     }
                 }
             }

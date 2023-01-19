@@ -22,21 +22,16 @@ public class GameModeSelection implements Runnable {
     public void run() {
 
         try {
-            String line;
-            do {
-                System.out.println("Receiving selection from player one");
-                communicator.sendGameModeSelectionRequest();
+            System.out.println("Receiving selection from player one");
+            communicator.sendGameModeSelectionRequest();
 
-                line = communicator.getClientInput(1);
-                System.out.println(line);
-                switch (line) {
-                    case "italian" -> selection = GameMode.ITALIAN;
-                    case "german" -> selection = GameMode.GERMAN;
-                    case "polish" -> selection = GameMode.POLISH;
-                    case "exit" -> selection = GameMode.EXIT;
-                    default -> selection = GameMode.NOT_SELECTED;
-                }
-            } while (selection == GameMode.NOT_SELECTED);
+            switch (communicator.getClientInput(1)) {
+                case "italian" -> selection = GameMode.ITALIAN;
+                case "german" -> selection = GameMode.GERMAN;
+                case "polish" -> selection = GameMode.POLISH;
+                case "exit" -> selection = GameMode.EXIT;
+                default -> selection = GameMode.NOT_SELECTED;
+            }
         }
         catch(IOException ex) {
             System.out.println("Exception in GameModeSelection");
